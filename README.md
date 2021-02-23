@@ -12,7 +12,7 @@ Engineering Product Design Project
 
 # Documentation
 > # Pictures
->>> [activity_mail.xml](TeamDesignPropType\app\src\main\res\layout\activity_main.xml)
+>>> [activity_mail.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignPropType/app/src/main/res/layout/activity_main.xml)
 
 >>>![til](photos/q1.PNG)
 
@@ -20,6 +20,6 @@ Engineering Product Design Project
 
 >>>![ti1](photos/q2.PNG)
 
->>> [activity_summary_page.xml](TeamDesignPropType\app\src\main\res\layout\activity_summary_page.xml)
+>>> [activity_summary_page.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignPropType/app/src/main/res/layout/activity_summary_page.xml)
 
 >>>![til](photos/q3.PNG)
