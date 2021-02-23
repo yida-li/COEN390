@@ -9,6 +9,24 @@ Engineering Product Design Project
 # Technology used
 
 # Project Team members
+> # Product Owner name: Alexander Vissani 
+>                 student id: 40055566
+>                 github username: JustAlexDev
+> # Team member name: Stirling Smith 
+>                 student id: 40043828
+>                 github username: 
+> # Team member name: Benjamin Grant 
+>                 student id: 40059608
+>                 github username: Bean-Green
+> # Team member name: Fatmah Almaas 
+>                 student id: 40013397 
+>                 github username: Fq899
+> # Team member name: Yida Li 
+>                 student id: 27033850
+>                 github username: yida-li
+> # Product Scrum Master : Ricky Lopez 
+>                 student id: 
+>                 github username: 
 
 # Documentation
 > # Pictures
@@ -23,3 +41,8 @@ Engineering Product Design Project
 >>> [activity_summary_page.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignPropType/app/src/main/res/layout/activity_summary_page.xml)
 
 >>>![til](photos/q3.PNG)
+
+# Edit this page
+
+
+<span class="edit-link"><a href="https://github.com/yida-li/COEN390/edit/main/README.md" target="_blank"><i class="fa fa-github"></i> Click this link to edit the REAME page as a collaborator/project member</a></span>
