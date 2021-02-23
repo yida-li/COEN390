@@ -14,12 +14,12 @@ Engineering Product Design Project
 > # Pictures
 >>> [activity_mail.xml](TeamDesignPropType\app\src\main\res\layout\activity_main.xml)
 
->>>![til](photo/q1.PNG)
+>>>![til](photos/q1.PNG)
 
 >>> An alternative main UI with a toggle button for the fan
 
->>>![ti1](photo/q2.PNG)
+>>>![ti1](photos/q2.PNG)
 
 >>> [activity_summary_page.xml](TeamDesignPropType\app\src\main\res\layout\activity_summary_page.xml)
 
->>>![til](photo/q3.PNG)
+>>>![til](photos/q3.PNG)
