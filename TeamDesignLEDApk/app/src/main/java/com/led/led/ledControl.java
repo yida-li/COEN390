@@ -96,10 +96,14 @@ public class ledControl extends AppCompatActivity {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
+                    // potentially used in later sprint
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    // potentially used in later sprint
 
             }
         });
@@ -108,10 +112,13 @@ public class ledControl extends AppCompatActivity {
 
 
     }
+
+    //functions that were called inside on the Oncreate of ledControl super constructor
     private void msg(String s)
     {
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
     }
+
     private void Disconnect()
     {
         if (btSocket!=null) //If the btSocket is busy
@@ -125,6 +132,7 @@ public class ledControl extends AppCompatActivity {
         }
         finish(); //return to the first layout
     }
+
     private void turnOffLed()
     {
         if (btSocket!=null)

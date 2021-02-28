@@ -19,20 +19,32 @@ import android.view.View.OnContextClickListener;
 import android.view.View.OnLongClickListener;
 public class DeviceList extends AppCompatActivity {
 
-   //Create widgets variables to “call” the widgets used to create the layout:
+
+
+
+    //Initializing objects and widgets
     Button btnPaired;
     ListView devicelist;
     private BluetoothAdapter myBluetooth = null;
     private Set<BluetoothDevice> pairedDevices;
     public static String EXTRA_ADDRESS = "device_address";
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
 
+        // calling widgets 
         btnPaired = findViewById(R.id.btnPairedd);
         devicelist = (ListView)findViewById(R.id.devicelistt);
 
+
+        // bluetooth connection
         myBluetooth = BluetoothAdapter.getDefaultAdapter();
         if(myBluetooth == null)
         {
@@ -58,7 +70,7 @@ public class DeviceList extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                pairedDevicesList(); //method that will be called
+                pairedDevicesList(); //method that will be called should the button be called
             }
         });
 
