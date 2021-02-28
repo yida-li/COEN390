@@ -30,17 +30,30 @@ Engineering Product Design Project
 
 # Documentation
 > # Pictures
->>> [activity_mail.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignPropType/app/src/main/res/layout/activity_main.xml)
+ 
+>> User Interface Prototype
+ 
+>>>>> [activity_mail.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignPropType/app/src/main/res/layout/activity_main.xml)
 
->>>![til](photos/q1.PNG)
+>>>>>![til](photos/q1.PNG)
 
->>> An alternative main UI with a toggle button for the fan
+>>>>> An alternative main UI with a toggle button for the fan
 
->>>![ti1](photos/q2.PNG)
+>>>>>![ti1](photos/q2.PNG)
 
->>> [activity_summary_page.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignPropType/app/src/main/res/layout/activity_summary_page.xml)
+>>>>> [activity_summary_page.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignPropType/app/src/main/res/layout/activity_summary_page.xml)
 
->>>![til](photos/q3.PNG)
+>>>>>![til](photos/q3.PNG)
+
+>> LED connection layout page for Prototype
+
+>>>>>![til](photos/z1.PNG)
+
+>>>>>![til](photos/z2.PNG)
+
+>>>>>![til](photos/z3.PNG)
+
+
 
 # Edit this page
 
