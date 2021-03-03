@@ -84,11 +84,11 @@ Engineering Product Design Project
 
 > > > > > [activity_main_screen.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignBTDatapath\app\src\main\res\layout\activity_main_screen.xml)
 
-> > > > > ![til](photos/b1.PNG)
+> > > > > ![til](photos/b1.jpg)
 
 > > > > > [activity_main.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignBTDatapath\app\src\main\res\layout\activity_main.xml)
 
-> > > > > ![til](photos/b2.PNG)
+> > > > > ![til](photos/b2.jpg)
 
 # Edit this page
 
