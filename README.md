@@ -92,4 +92,4 @@ Engineering Product Design Project
 
 # Edit this page
 
-<span class="edit-link"><a href="https://github.com/yida-li/COEN390/edit/main/README.md" target="_blank"><i class="fa fa-github"></i> Click this link to edit the REAME page as a collaborator/project member</a></span>
+<span class="edit-link"><a href="https://github.com/yida-li/COEN390/edit/master/README.md" target="_blank"><i class="fa fa-github"></i> Click this link to edit the REAME page as a collaborator/project member</a></span>
