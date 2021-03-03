@@ -45,10 +45,15 @@ public class ledControl extends AppCompatActivity {
         btnOff = (Button)findViewById(R.id.button2);
         btnDis = (Button)findViewById(R.id.button3);
         brightness = (SeekBar)findViewById(R.id.seekBar);
-
         textView = (TextView)findViewById(R.id.textView2);
 
+
+
+
         //  new ConnectBT().execute(); //  Call the class at the bottom on line 161 to connect to bluetooth
+
+
+
 
         btnOn.setOnClickListener(new View.OnClickListener()
         {

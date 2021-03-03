@@ -8,6 +8,18 @@ Engineering Product Design Project
 
 # Technology used
 
+> # Hardware components:
+
+> # Software components:
+
+> > : Arduino IDE 1.8.13
+
+> > : Android Studio
+
+> > : Visual Code Studio
+
+> > : GitHub Desktop
+
 # Project Team members
 
 > # Product Owner name: Alexander Vissani
@@ -28,7 +40,7 @@ Engineering Product Design Project
 > # Team member name: Fatmah Almaas
 >
 >                 student id: 40013397
->                 github username: Fq899
+>                 github username: fatimaAlma
 >
 > # Team member name: Yida Li
 >
@@ -67,6 +79,16 @@ Engineering Product Design Project
 > > > > > ![til](photos/z2.PNG)
 
 > > > > > ![til](photos/z3.PNG)
+
+> > Blue connection layout page for Prototype
+
+> > > > > [activity_main_screen.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignBTDatapath\app\src\main\res\layout\activity_main_screen.xml)
+
+> > > > > ![til](photos/b1.PNG)
+
+> > > > > [activity_main.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignBTDatapath\app\src\main\res\layout\activity_main.xml)
+
+> > > > > ![til](photos/b2.PNG)
 
 # Edit this page
 
