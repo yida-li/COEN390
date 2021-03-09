@@ -51,10 +51,6 @@ F 3 "" H 2300 1400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1850 2850 2700 2850
-Wire Wire Line
-	2700 2850 2700 1350
-Wire Wire Line
 	1850 2450 2300 2450
 $Comp
 L power:GND #PWR?
@@ -126,7 +122,7 @@ S 9100 2450 900  500
 U 604AB21D
 F0 "Fan Configuration" 50
 F1 "FanConfig.sch" 50
-F2 "5V" I L 9100 2550 50 
+F2 "RelaySwitch" I L 9100 2550 50 
 F3 "GND" I L 9100 2850 50 
 $EndSheet
 Text GLabel 1100 1200 1    50   Input ~ 0
@@ -157,17 +153,6 @@ Wire Wire Line
 	8750 1350 8750 1550
 Wire Wire Line
 	10000 1200 10400 1200
-$Comp
-L power:+5V #PWR?
-U 1 1 604B3AF8
-P 8750 2250
-F 0 "#PWR?" H 8750 2100 50  0001 C CNN
-F 1 "+5V" H 8765 2423 50  0000 C CNN
-F 2 "" H 8750 2250 50  0001 C CNN
-F 3 "" H 8750 2250 50  0001 C CNN
-	1    8750 2250
-	1    0    0    -1  
-$EndComp
 $Comp
 L power:+5V #PWR?
 U 1 1 604B3E33
@@ -202,8 +187,6 @@ F 3 "" H 8750 4550 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8750 2250 8750 2550
-Wire Wire Line
 	8750 2550 9100 2550
 Wire Wire Line
 	9100 2850 8750 2850
@@ -225,4 +208,10 @@ Text GLabel 10250 4200 2    50   Output ~ 0
 TX_Blue
 Wire Wire Line
 	10000 4200 10250 4200
+Text GLabel 2300 4950 2    50   Output ~ 0
+RelaySwitch
+Wire Wire Line
+	2300 4950 1850 4950
+Text GLabel 8250 2550 2    50   Output ~ 0
+RelaySwitch
 $EndSCHEMATC
