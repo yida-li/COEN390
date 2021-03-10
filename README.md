@@ -10,6 +10,18 @@ Engineering Product Design Project
 
 > # Hardware components:
 
+> > : MQ-135 Air Quality Sensor  ( MQ )
+
+> > : Arduino Uno R3 USB Microcontroller ( Uno )
+
+> > : Bluetooth Module HC-05 ( Blue )
+
+> > : JQC-3FF 5V Relay ( Relay )
+
+> > : Brushless 24V DC fan ( fan )
+
+> > : Two 9V Batteries
+
 > # Software components:
 
 > > : Arduino IDE 1.8.13
@@ -56,13 +68,13 @@ Engineering Product Design Project
 
 > # Pictures
 
-> > User Interface Prototype
+> > # User Interface Prototype
 
 > > > > > [activity_mail.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignPropType/app/src/main/res/layout/activity_main.xml)
 
 > > > > > ![til](photos/q1.PNG)
 
-> > > > > An alternative main UI with a toggle button for the fan
+> > > > >  An alternative main UI with a toggle button for the fan
 
 > > > > > ![ti1](photos/q2.PNG)
 
@@ -70,17 +82,13 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/q3.PNG)
 
-> > LED connection layout page for Prototype
+> > # Fan/Led connection layout page for Prototype
 
 > > > > > [activity_led_control.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignLEDApk/app/src/main/res/layout/activity_led_control.xml)
 
-> > > > > ![til](photos/z1.PNG)
-
 > > > > > ![til](photos/z2.PNG)
 
-> > > > > ![til](photos/z3.PNG)
-
-> > Blue connection layout page for Prototype
+> > # Blue connection layout page for Prototype
 
 > > > > > [activity_main_screen.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignBTDatapath\app\src\main\res\layout\activity_main_screen.xml)
 
@@ -89,6 +97,16 @@ Engineering Product Design Project
 > > > > > [activity_main.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignBTDatapath\app\src\main\res\layout\activity_main.xml)
 
 > > > > > ![til](photos/b2.jpg)
+
+> > # Sprint 1 Prototype combined with all components listed above
+
+> > > > > [TeamDesignApp](https://github.com/yida-li/COEN390/tree/master/TeamDesignApp)
+
+> > > > > ![til](photos/y2.jpg)
+
+> > # Protoype flow diagram
+
+> > > > > ![til](photos/y1.PNG)
 
 # Edit this page
 
