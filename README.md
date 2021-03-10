@@ -10,7 +10,7 @@ Engineering Product Design Project
 
 > # Hardware components:
 
-> > : MQ-135 Air Quality Sensor  ( MQ )
+> > : MQ-135 Air Quality Sensor ( MQ )
 
 > > : Arduino Uno R3 USB Microcontroller ( Uno )
 
@@ -74,7 +74,7 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/q1.PNG)
 
-> > > > >  An alternative main UI with a toggle button for the fan
+> > > > > An alternative main UI with a toggle button for the fan
 
 > > > > > ![ti1](photos/q2.PNG)
 
@@ -107,6 +107,10 @@ Engineering Product Design Project
 > > # Protoype flow diagram
 
 > > > > > ![til](photos/y1.PNG)
+
+> > # Protoype System Architecture
+
+> > > > > ![til](photos/y3.PNG)
 
 # Edit this page
 
