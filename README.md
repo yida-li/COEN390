@@ -70,7 +70,7 @@ Engineering Product Design Project
 
 > > # User Interface Prototype
 
-> > > > > [activity_mail.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignPropType/app/src/main/res/layout/activity_main.xml)
+> > > > > [activity_mail.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignPropType/app/src/main/res/layout/activity_main.xml)
 
 > > > > > ![til](photos/q1.PNG)
 
@@ -78,23 +78,23 @@ Engineering Product Design Project
 
 > > > > > ![ti1](photos/q2.PNG)
 
-> > > > > [activity_summary_page.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignPropType/app/src/main/res/layout/activity_summary_page.xml)
+> > > > > [activity_summary_page.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignPropType/app/src/main/res/layout/activity_summary_page.xml)
 
 > > > > > ![til](photos/q3.PNG)
 
 > > # Fan/Led connection layout page for Prototype
 
-> > > > > [activity_led_control.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignLEDApk/app/src/main/res/layout/activity_led_control.xml)
+> > > > > [activity_led_control.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignLEDApk/app/src/main/res/layout/activity_led_control.xml)
 
 > > > > > ![til](photos/z2.PNG)
 
 > > # Blue connection layout page for Prototype
 
-> > > > > [activity_main_screen.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignBTDatapath\app\src\main\res\layout\activity_main_screen.xml)
+> > > > > [activity_main_screen.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignBTDatapath\app\src\main\res\layout\activity_main_screen.xml)
 
 > > > > > ![til](photos/b1.jpg)
 
-> > > > > [activity_main.xml](https://github.com/yida-li/COEN390/blob/main/TeamDesignBTDatapath\app\src\main\res\layout\activity_main.xml)
+> > > > > [activity_main.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignBTDatapath\app\src\main\res\layout\activity_main.xml)
 
 > > > > > ![til](photos/b2.jpg)
 
