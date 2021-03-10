@@ -90,11 +90,11 @@ Engineering Product Design Project
 
 > > # Blue connection layout page for Prototype
 
-> > > > > [activity_main_screen.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignBTDatapath\app\src\main\res\layout\activity_main_screen.xml)
+> > > > > [activity_main_screen.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignBTDatapath/app/src/main/res/layout/activity_main_screen.xml)
 
 > > > > > ![til](photos/b1.jpg)
 
-> > > > > [activity_main.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignBTDatapath\app\src\main\res\layout\activity_main.xml)
+> > > > > [activity_main.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignBTDatapath/app/src/main/res/layout/activity_main.xml)
 
 > > > > > ![til](photos/b2.jpg)
 
