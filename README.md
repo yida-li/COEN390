@@ -98,11 +98,13 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/b2.jpg)
 
-> > # Sprint 1 Prototype combined with all components listed above
+> > # [Sprint 1 App Prototype](https://github.com/yida-li/COEN390/tree/master/TeamDesignApp)
 
-> > > > > [TeamDesignApp](https://github.com/yida-li/COEN390/tree/master/TeamDesignApp)
+> > > > > [activity_user_activity.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignApp/app/src/main/res/layout/activity_user_activity.xml)
 
 > > > > > ![til](photos/y2.jpg)
+
+> > > > > ![til](photos/y4.jpg)
 
 > > # Protoype flow diagram
 

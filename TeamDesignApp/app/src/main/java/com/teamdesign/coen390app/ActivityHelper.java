@@ -1,4 +1,4 @@
-package com.example.projecttimer;
+package com.teamdesign.coen390app;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;

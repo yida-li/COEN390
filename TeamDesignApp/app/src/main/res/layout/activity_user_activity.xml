@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainScreen">
+    tools:context=".UserActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -46,7 +46,7 @@
         <ScrollView
             android:id="@+id/viewScroll"
             android:layout_width="match_parent"
-            android:layout_height="409dp"
+            android:layout_height="0dp"
             android:layout_weight="1">
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_gravity="top"
                 android:layout_marginTop="20dp"
                 android:background="#eeeeee"
-                android:hint="Message shows up here ..."
+                android:hint="Data log will be displayed here"
                 android:scrollbars="vertical"
                 android:typeface="monospace" />
         </ScrollView>

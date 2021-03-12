@@ -1,4 +1,5 @@
-package com.example.projecttimer;
+package com.teamdesign.coen390app;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.bluetooth.BluetoothAdapter;
@@ -40,13 +41,16 @@ public class MainActivity extends AppCompatActivity {
     private static final int SETTINGS = 20;
     private UUID mDeviceUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private int mBufferSize = 50000; //Default
-    public static final String DEVICE_EXTRA = "com.example.projecttimer.SOCKET";
-    public static final String DEVICE_UUID = "com.example.projecttimer.uuid";
-    private static final String DEVICE_LIST = "com.example.projecttimer.devicelist";
-    private static final String DEVICE_LIST_SELECTED = "com.example.projecttimer.devicelistselected";
-    public static final String BUFFER_SIZE = "com.example.projecttimer.buffersize";
-    private static final String TAG = "BlueTest5-MainActivity";
 
+    public static final String DEVICE_EXTRA = "com.teamdesign.coen390app.SOCKET";
+    public static final String DEVICE_UUID = "com.teamdesign.coen390app..uuid";
+    private static final String DEVICE_LIST = "com.teamdesign.coen390app..devicelist";
+    private static final String DEVICE_LIST_SELECTED = "com.teamdesign.coen390app.devicelistselected";
+    public static final String BUFFER_SIZE = "com.teamdesign.coen390app.buffersize";
+
+    // Testing which will be deprecated as soon as ricky as us about it
+    private static final String TAG = "BlueTest5-MainActivity";
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -98,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-                Intent intent = new Intent(getApplicationContext(), MainScreen.class);
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                 intent.putExtra(DEVICE_EXTRA, device);
                 intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
                 intent.putExtra(BUFFER_SIZE, mBufferSize);
@@ -183,10 +187,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Searches for paired devices. Doesn't do a scan! Only devices which are paired through Settings->Bluetooth
-     * will show up with this. I didn't see any need to re-build the wheel over here
-     * @author ryder
-     *
+     * Searches for paired devices.
      */
     private class SearchDevices extends AsyncTask<Void, Void, List<BluetoothDevice>> {
 
@@ -215,11 +216,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Custom adapter to show the current devices in the list. This is a bit of an overkill for this
-     * project, but I figured it would be good learning
-     * Most of the code is lifted from somewhere but I can't find the link anymore
-     * @author ryder
-     *
+     * Custom adapter to show the current devices in the list.
      */
     private class MyAdapter extends ArrayAdapter<BluetoothDevice> {
         private int selectedIndex;
@@ -299,9 +296,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Deprecated from the guide online
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-// Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.homescreen, menu);
         return true;
     }

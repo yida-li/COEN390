@@ -1,4 +1,4 @@
-package com.example.projecttimer;
+package com.teamdesign.coen390app;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.projecttimer", appContext.getPackageName());
+        assertEquals("com.teamdesign.coen390app", appContext.getPackageName());
     }
 }

@@ -1,4 +1,5 @@
-package com.example.projecttimer;
+package com.teamdesign.coen390app;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
@@ -24,78 +25,66 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainScreen extends Activity {
+public class UserActivity extends Activity {
 
+
+    // Integer value used for time system
+    private int seconds = 0;
+
+    // Integer counter used manipulate the threshold Notification
+    public int counter =2;
+
+    // TextView layout to display a notification if Air PPM reach a certain threshold
+    private TextView notificationText;
+
+    // Boolean variable used for timer
+    private boolean running;
+    private boolean wasRunning;
+
+    // Variable Initialization for blueooth module
+    private boolean mIsUserInitiatedDisconnect = false;
+    private boolean mIsBluetoothConnected = false;
+    private BluetoothDevice mDevice;
+    private ProgressDialog progressDialog;
     private static final String TAG = "BlueTest5-MainActivity";
-    private int mMaxChars = 50000;//Default
+    private int mMaxChars = 50000;
     private UUID mDeviceUUID;
     private BluetoothSocket mBTSocket;
     private ReadInput mReadThread = null;
-    private int seconds = 0;
 
-
-   public int counter =2;
-
-
-
-
-
-    // Is the stopwatch running?
-    private boolean running;
-
-    private boolean wasRunning;
-
-    private boolean mIsUserInitiatedDisconnect = false;
-
-    // boolean variable for threshold offset
-    private boolean thresholdNotification =false;
-
-
-    // All controls here
-    private TextView notificationText;
-
-
+    // Widgets for Main screen layout
     private TextView mTxtReceive;
     private Button mBtnClearInput;
     private ScrollView scrollView;
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
 
+    // Buttons to turn on/off/ and disconnect the fan
     Button btnOn, btnOff, btnDis;
-    private boolean mIsBluetoothConnected = false;
 
-    private BluetoothDevice mDevice;
 
-    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen);
+
+        // setContentView basically connects this instance to the designated xml file
+        setContentView(R.layout.activity_user_activity);
+
         ActivityHelper.initialize(this);
         if (savedInstanceState != null) {
-
-            // Get the previous state of the stopwatch
-            // if the activity has been
-            // destroyed and recreated.
-            seconds
-                    = savedInstanceState
-                    .getInt("seconds");
-            running
-                    = savedInstanceState
-                    .getBoolean("running");
-            wasRunning
-                    = savedInstanceState
-                    .getBoolean("wasRunning");
+            // Get the previous state of the stopwatch if the activity has been destroyed and recreated.
+            seconds = savedInstanceState.getInt("seconds");
+            running = savedInstanceState.getBoolean("running");
+            wasRunning = savedInstanceState.getBoolean("wasRunning");
         }
-       runTimer();
+        runTimer();
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
         mDevice = b.getParcelable(MainActivity.DEVICE_EXTRA);
         mDeviceUUID = UUID.fromString(b.getString(MainActivity.DEVICE_UUID));
         mMaxChars = b.getInt(MainActivity.BUFFER_SIZE);
-        Log.d(TAG, "Ready");
-
         notificationText =(TextView) findViewById(R.id.notificationText);
         mTxtReceive = (TextView) findViewById(R.id.txtReceive);
         chkScroll = (CheckBox) findViewById(R.id.chkScroll);
@@ -103,7 +92,6 @@ public class MainScreen extends Activity {
         scrollView = (ScrollView) findViewById(R.id.viewScroll);
         mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
-
         btnOn = (Button)findViewById(R.id.button);
         btnOff = (Button)findViewById(R.id.button2);
         btnDis = (Button)findViewById(R.id.button3);
@@ -113,7 +101,7 @@ public class MainScreen extends Activity {
             @Override
             public void onClick(View v)
             {
-                turnOnLed();      //method to turn on
+                turnOnFan();      //method to turn on
             }
         });
 
@@ -121,7 +109,7 @@ public class MainScreen extends Activity {
             @Override
             public void onClick(View v)
             {
-                turnOffLed();   //method to turn off
+                turnOffFan();   //method to turn off
             }
         });
 
@@ -134,7 +122,6 @@ public class MainScreen extends Activity {
             }
         });
 
-
         mBtnClearInput.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -143,10 +130,11 @@ public class MainScreen extends Activity {
                 notificationText.setText("");
             }
         });
+    } // end of Oncreate function
 
-
-    }
-
+    /*
+    Thread based child-0process datapath to constantly uplaod stream of
+     */
     private class ReadInput implements Runnable {
 
         private boolean bStop = false;
@@ -190,21 +178,21 @@ public class MainScreen extends Activity {
                                     mTxtReceive.append(strInput);
 
 
-                                   
-
-                                 
-                                        
-                                     String firstInt = strInput.replaceFirst(".*?(\\d+).*", "$1");
 
 
-                                     int i;
-                                     try {
-                                          i = Integer.parseInt(firstInt.trim());
-                                         }
-                                         catch (NumberFormatException e)
-                                         {
-                                          i = 0;
-                                         }
+
+
+                                    String firstInt = strInput.replaceFirst(".*?(\\d+).*", "$1");
+
+
+                                    int i;
+                                    try {
+                                        i = Integer.parseInt(firstInt.trim());
+                                    }
+                                    catch (NumberFormatException e)
+                                    {
+                                        i = 0;
+                                    }
 
 
 
@@ -223,10 +211,10 @@ public class MainScreen extends Activity {
 
 
                                     }
-                                   
 
 
-                                    
+
+
                                     int txtLength = mTxtReceive.getEditableText().length();
                                     if(txtLength > mMaxChars){
                                         mTxtReceive.getEditableText().delete(0, txtLength - mMaxChars);
@@ -254,14 +242,13 @@ public class MainScreen extends Activity {
 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
         }
 
         public void stop() {
             bStop = true;
         }
-
     }
+
 
     private void Disconnect()
     {
@@ -276,7 +263,7 @@ public class MainScreen extends Activity {
         }
         finish(); //return to the first layout
     }
-    private void turnOffLed()
+    private void turnOffFan()
     {
         if (mBTSocket!=null)
         {
@@ -290,7 +277,7 @@ public class MainScreen extends Activity {
             }
         }
     }
-    private void turnOnLed()
+    private void turnOnFan()
     {
         if (mBTSocket!=null)
         {
@@ -307,43 +294,7 @@ public class MainScreen extends Activity {
 
 
 
-    private class DisConnectBT extends AsyncTask<Void, Void, Void> {
 
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            if (mReadThread != null) {
-                mReadThread.stop();
-                while (mReadThread.isRunning())
-                    ; // Wait until it stops
-                mReadThread = null;
-
-            }
-
-            try {
-                mBTSocket.close();
-            } catch (IOException e) {
-// TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            mIsBluetoothConnected = false;
-            if (mIsUserInitiatedDisconnect) {
-                finish();
-            }
-        }
-
-    }
 
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
@@ -359,9 +310,8 @@ public class MainScreen extends Activity {
         wasRunning = running;
         running = false;
     }
-    // If the activity is resumed,
-    // start the stopwatch
-    // again if it was running previously.
+
+    // If the activity is resumed,start the stopwatch again if it was running previously.
     @Override
     protected void onResume() {
         if (mBTSocket == null || !mIsBluetoothConnected) {
@@ -373,10 +323,7 @@ public class MainScreen extends Activity {
             running = true;
         }
     }
-    // Start the stopwatch running
-    // when the Start button is clicked.
-    // Below method gets called
-    // when the Start button is clicked.
+    // Start the stopwatch running when the Start button is clicked. Below method gets called when the Start button is clicked.
 
     @Override
     protected void onStop() {
@@ -385,28 +332,33 @@ public class MainScreen extends Activity {
     }
 
 
-   // protected void onSaveInstanceState(Bundle outState) {
-// TODO Auto-generated method stub
-  //      super.onSaveInstanceState(outState);
-  //  }
-   @Override
-   public void onSaveInstanceState(
-           Bundle savedInstanceState)
-   {
-       savedInstanceState
-               .putInt("seconds", seconds);
-       savedInstanceState
-               .putBoolean("running", running);
-       savedInstanceState
-               .putBoolean("wasRunning", wasRunning);
-   }
+    // protected void onSaveInstanceState(Bundle outState) {
+    // TODO Auto-generated method stub
+    //      super.onSaveInstanceState(outState);
+    //  }
 
+    @Override
+    public void onSaveInstanceState(
+            Bundle savedInstanceState)
+    {
+        savedInstanceState
+                .putInt("seconds", seconds);
+        savedInstanceState
+                .putBoolean("running", running);
+        savedInstanceState
+                .putBoolean("wasRunning", wasRunning);
+    }
+
+
+
+
+    // Connect aysynchronously to blueooth
     private class ConnectBT extends AsyncTask<Void, Void, Void> {
         private boolean mConnectSuccessful = true;
 
         @Override
         protected void onPreExecute() {
-            progressDialog = ProgressDialog.show(MainScreen.this, "Hold on", "Connecting");// http://stackoverflow.com/a/11130220/1287554
+            progressDialog = ProgressDialog.show(UserActivity.this, "Hold on", "Connecting");
         }
 
         @Override
@@ -444,83 +396,94 @@ public class MainScreen extends Activity {
 
     }
 
+    //Disconnect aysynchronously to blueooth
+    private class DisConnectBT extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            if (mReadThread != null) {
+                mReadThread.stop();
+                while (mReadThread.isRunning())
+                    ; // Wait until it stops
+                mReadThread = null;
+            }
+            try {
+                mBTSocket.close();
+            } catch (IOException e) {
+// TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            mIsBluetoothConnected = false;
+            if (mIsUserInitiatedDisconnect) {
+                finish();
+            }
+        }
+    }
+
+
+    // Start the stop watch when the start button is clicked
     public void onClickStart(View view)
     {
         running = true;
     }
 
-    // Stop the stopwatch running
-    // when the Stop button is clicked.
-    // Below method gets called
-    // when the Stop button is clicked.
+    // Stop the stopwatch when the Stop button is clicked.
+
     public void onClickStop(View view)
     {
         running = false;
     }
 
-    // Reset the stopwatch when
-    // the Reset button is clicked.
-    // Below method gets called
-    // when the Reset button is clicked.
+    // Reset the stopwatch when the Reset button is clicked.
     public void onClickReset(View view)
     {
         running = false;
         seconds = 0;
     }
 
-    // Sets the NUmber of seconds on the timer.
-    // The runTimer() method uses a Handler
-    // to increment the seconds and
-    // update the text view.
+    // Sets the Number of seconds on the timer. The runTimer() method uses a Handler to increment the seconds and update the text view.
     private void runTimer()
     {
-
         // Get the text view.
-        final TextView timeView
-                = (TextView)findViewById(
-                R.id.time_view);
+        final TextView timeView = (TextView)findViewById(R.id.time_view);
 
         // Creates a new Handler
-        final Handler handler
-                = new Handler();
+        final Handler handler = new Handler();
+        // Call the post() method, passing in a new Runnable.
+        // The post() method processes code without a delay,so the code in the Runnable will run almost immediately.
 
-        // Call the post() method,
-        // passing in a new Runnable.
-        // The post() method processes
-        // code without a delay,
-        // so the code in the Runnable
-        // will run almost immediately.
         handler.post(new Runnable() {
             @Override
-
             public void run()
             {
                 int hours = seconds / 3600;
                 int minutes = (seconds % 3600) / 60;
                 int secs = seconds % 60;
+                // Format the seconds into hours, minutes,and seconds
 
-                // Format the seconds into hours, minutes,
-                // and seconds.
-                String time
-                        = String
-                        .format(Locale.getDefault(),
-                                "%d:%02d:%02d", hours,
-                                minutes, secs);
-
+                String time = String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, secs);
                 // Set the text view text.
                 timeView.setText(time);
 
-                // If running is true, increment the
-                // seconds variable.
+                // If running is true, increment the seconds variable
                 if (running) {
                     seconds++;
                 }
 
-                // Post the code again
-                // with a delay of 1 second.
+                // Post the code again with a delay of 1 second
                 handler.postDelayed(this, 1000);
             }
         });
     }
-
 }

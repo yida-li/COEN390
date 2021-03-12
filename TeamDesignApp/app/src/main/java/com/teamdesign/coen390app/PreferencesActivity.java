@@ -1,4 +1,5 @@
-package com.example.projecttimer;
+package com.teamdesign.coen390app;
+
 import java.util.Map;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -52,7 +53,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
 
         for (Map.Entry<String, ?> entry : keys.entrySet())
         {
-//          Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+            //          Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
             Preference pref = findPreference(entry.getKey());
             if (pref != null)
             {

@@ -7,8 +7,8 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.projecttimer"
-        minSdkVersion 16
+        applicationId "com.teamdesign.coen390app"
+        minSdkVersion 18
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"

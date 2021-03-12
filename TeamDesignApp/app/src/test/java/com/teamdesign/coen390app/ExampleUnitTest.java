@@ -1,4 +1,4 @@
-package com.example.projecttimer;
+package com.teamdesign.coen390app;
 
 import org.junit.Test;
 
