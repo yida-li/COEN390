@@ -177,14 +177,19 @@ public class UserActivity extends Activity {
                                 public void run() {
                                     mTxtReceive.append(strInput);
 
-
-
-
-
-
+                                     /*   
+                                     * TODO : Sprint 2 Features PlaceHolders                  March 15
+                                     */ 
+                                    
+                                     /*   
+                                     * TODO : Sprint 3 Features PlaceHolders                  March 29
+                                     */ 
+                                    
+                                    /*   
+                                     * TODO : Addition features Placeholders                  
+                                     */ 
+                                    
                                     String firstInt = strInput.replaceFirst(".*?(\\d+).*", "$1");
-
-
                                     int i;
                                     try {
                                         i = Integer.parseInt(firstInt.trim());
@@ -194,12 +199,7 @@ public class UserActivity extends Activity {
                                         i = 0;
                                     }
 
-
-
-
                                     if( i>=100){
-
-
                                         if(counter >1){
                                             notificationText.setText("Air threshold is reached!");
 
@@ -207,14 +207,7 @@ public class UserActivity extends Activity {
                                             running =true;
                                             counter--;
                                         }
-
-
-
-                                    }
-
-
-
-
+                                   }
                                     int txtLength = mTxtReceive.getEditableText().length();
                                     if(txtLength > mMaxChars){
                                         mTxtReceive.getEditableText().delete(0, txtLength - mMaxChars);
