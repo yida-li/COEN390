@@ -1,0 +1,84 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 3 4
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Motor:Fan_ALT M?
+U 1 1 60470058
+P 1250 1900
+F 0 "M?" H 1460 1946 50  0000 L CNN
+F 1 "24V" H 1460 1855 50  0000 L CNN
+F 2 "" H 1250 1850 50  0001 C CNN
+F 3 "~" H 1250 1850 50  0001 C CNN
+	1    1250 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L COEN390_Hardware:JQC-3FF(RELAY) U?
+U 1 1 604721F9
+P 2700 1750
+F 0 "U?" H 2725 2125 50  0000 C CNN
+F 1 "JQC-3FF(RELAY)" H 2725 2034 50  0000 C CNN
+F 2 "" H 2750 1600 50  0001 C CNN
+F 3 "" H 2750 1600 50  0001 C CNN
+	1    2700 1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1250 1600 2350 1600
+$Comp
+L Device:Battery BT?
+U 1 1 604782B9
+P 1600 2450
+F 0 "BT?" V 1845 2450 50  0000 C CNN
+F 1 "9V" V 1754 2450 50  0000 C CNN
+F 2 "" V 1600 2510 50  0001 C CNN
+F 3 "~" V 1600 2510 50  0001 C CNN
+	1    1600 2450
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1250 2200 1250 2450
+Wire Wire Line
+	2350 2450 2350 1900
+$Comp
+L Device:Battery BT?
+U 1 1 6047D24E
+P 2100 2450
+F 0 "BT?" V 2345 2450 50  0000 C CNN
+F 1 "9V" V 2254 2450 50  0000 C CNN
+F 2 "" V 2100 2510 50  0001 C CNN
+F 3 "~" V 2100 2510 50  0001 C CNN
+	1    2100 2450
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1400 2450 1250 2450
+Wire Wire Line
+	1900 2450 1800 2450
+Wire Wire Line
+	2350 2450 2300 2450
+Text HLabel 3300 2200 3    50   Input ~ 0
+GND
+Wire Wire Line
+	3100 1600 3300 1600
+Wire Wire Line
+	3300 1600 3300 1300
+Wire Wire Line
+	3300 1900 3300 2200
+Wire Wire Line
+	3100 1900 3300 1900
+Text HLabel 3300 1300 1    50   Input ~ 0
+RelaySwitch
+$EndSCHEMATC
