@@ -25,7 +25,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Vibrator;
-
+import android.content.Context;
+import android.os.Build;
+import android.os.VibrationEffect;
 public class UserActivity extends Activity {
 
 
