@@ -30,8 +30,9 @@ U 604A3244
 F0 "Gas Sensor for Air Quality" 50
 F1 "MQ-135.sch" 50
 F2 "5V" I L 9100 1050 50 
-F3 "Analog_Out" O R 10000 1200 50 
+F3 "Analog_Out" O R 10000 1350 50 
 F4 "GND" I L 9100 1350 50 
+F5 "AirSensorSwitch" I L 9100 1200 50 
 $EndSheet
 Wire Wire Line
 	1850 2050 2100 2050
@@ -115,7 +116,7 @@ Text GLabel 2300 3200 2    50   Input ~ 0
 AirQualityValue
 Wire Wire Line
 	2300 3200 1850 3200
-Text GLabel 10400 1200 2    50   Output ~ 0
+Text GLabel 10400 1350 2    50   Output ~ 0
 AirQualityValue
 $Sheet
 S 9100 2450 900  500 
@@ -151,8 +152,6 @@ Wire Wire Line
 	9100 1350 8750 1350
 Wire Wire Line
 	8750 1350 8750 1550
-Wire Wire Line
-	10000 1200 10400 1200
 $Comp
 L power:+5V #PWR?
 U 1 1 604B3E33
@@ -214,4 +213,14 @@ Wire Wire Line
 	2300 4950 1850 4950
 Text GLabel 8250 2550 2    50   Output ~ 0
 RelaySwitch
+Wire Wire Line
+	10400 1350 10000 1350
+Wire Wire Line
+	9100 1200 8750 1200
+Text GLabel 2300 5150 2    50   Output ~ 0
+AirSensorSwitch
+Wire Wire Line
+	1850 5150 2300 5150
+Text GLabel 8750 1200 0    50   Input ~ 0
+AirSensorSwitch
 $EndSCHEMATC
