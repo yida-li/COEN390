@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Vibrator;
@@ -62,11 +63,9 @@ public class UserActivity extends Activity {
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
 
-    // Buttons to turn on/off/ and disconnect the fan
-    Button btnOn, btnOff, btnDis;
-
-
-
+    // switch to turn the fan and sensor off
+    Switch sensSwitch, fanSwitch;
+    boolean sensSwitchState, fanSwitchState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +94,34 @@ public class UserActivity extends Activity {
         scrollView = (ScrollView) findViewById(R.id.viewScroll);
         mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
-        btnOn = (Button)findViewById(R.id.button);
-        btnOff = (Button)findViewById(R.id.button2);
-        btnDis = (Button)findViewById(R.id.button3);
 
+        fanSwitch = findViewById(R.id.fanSwitch);
+        fanSwitchState = fanSwitch.isChecked();
+
+        if(fanSwitchState == true)
+        {
+            turnOnFan();
+        }
+
+        if(fanSwitchState == false)
+        {
+            turnOffFan();
+        }
+
+        sensSwitch = findViewById(R.id.sensSwitch);
+        sensSwitchState = sensSwitch.isChecked();
+
+        if(sensSwitchState == true)
+        {
+            turnOnSensor();
+        }
+
+        if(sensSwitchState == false)
+        {
+            turnOffSensor();
+        }
+
+        /*
         btnOn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -124,6 +147,8 @@ public class UserActivity extends Activity {
                 Disconnect(); //close connection and close the application
             }
         });
+
+         */
 
         mBtnClearInput.setOnClickListener(new OnClickListener() {
 
@@ -301,9 +326,34 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         }
     }
 
-
-
-
+    private void turnOnSensor()
+    {
+        if (mBTSocket!=null)
+        {
+            try
+            {
+                mBTSocket.getOutputStream().write("SO".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
+    private void turnOffSensor()
+    {
+        if (mBTSocket!=null)
+        {
+            try
+            {
+                mBTSocket.getOutputStream().write("SF".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
 
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();

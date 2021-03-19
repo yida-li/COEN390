@@ -28,6 +28,20 @@
         android:layout_height="666dp"
         android:orientation="vertical">
 
+        <Switch
+            android:id="@+id/fanSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fan"
+            android:textSize="18sp" />
+
+        <Switch
+            android:id="@+id/sensSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sensor"
+            android:textSize="18sp" />
+
         <CheckBox
             android:id="@+id/chkScroll"
             android:layout_width="fill_parent"
@@ -118,27 +132,6 @@
 
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="19dp" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="203dp"
-            android:layout_height="wrap_content"
-            android:text="On" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="204dp"
-            android:layout_height="wrap_content"
-            android:text="Off" />
-
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Disconnect" />
 </LinearLayout>
