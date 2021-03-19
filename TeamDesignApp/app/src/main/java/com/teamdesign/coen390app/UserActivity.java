@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.UUID;
 import java.lang.Integer;
 import android.app.Activity;
+import android.app.Notification;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -29,8 +30,19 @@ import android.os.Vibrator;
 import android.content.Context;
 import android.os.Build;
 import android.os.VibrationEffect;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_1_ID;
+import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
+import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_3_ID;
+
 public class UserActivity extends Activity {
 
+
+    // Notification manager initialization
+    private NotificationManagerCompat notificationManager;
 
     // Integer value used for time system
     private int seconds = 0;
@@ -121,7 +133,11 @@ public class UserActivity extends Activity {
             turnOffSensor();
         }
 
-        /*
+       
+        //
+        notificationManager = NotificationManagerCompat.from(this);
+
+
         btnOn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -159,6 +175,14 @@ public class UserActivity extends Activity {
             }
         });
     } // end of Oncreate function
+
+
+
+
+
+
+
+
 
     /*
     Thread based child-0process datapath to constantly uplaod stream of
@@ -230,7 +254,8 @@ public class UserActivity extends Activity {
                                     if( i>=100){
                                         if(counter >1){
                                             notificationText.setText("Air threshold is reached!");
-                                            Vibration();
+                                            sendAlert1();
+                                            sendAlert2();
                                             // if everything above works, open the runnig=true;
                                             running =true;
                                             counter--;
@@ -272,7 +297,9 @@ public class UserActivity extends Activity {
 
 
 
-    private void Vibration(){
+ /*  Unused function for testing
+
+  private void Vibration(){
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 // Vibrate for 500 milliseconds
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -282,6 +309,45 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     v.vibrate(500);
 }
     }
+*/
+
+
+    /*
+    Sends Alert to user even if application is in background
+     */
+
+    public void sendAlert1(){
+
+        Notification notification = new NotificationCompat.Builder(UserActivity.this,CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_notification2)
+                .setContentTitle("Smoke Particles Detected!")
+                .setContentText("Air ppm critical threshold reached!")
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setColor(getResources().getColor(R.color.purple_700))
+                .build();
+
+        notificationManager.notify(1, notification);
+    }
+
+
+
+    public void sendAlert2(){
+
+        Notification notification = new NotificationCompat.Builder(UserActivity.this,CHANNEL_2_ID)
+                .setSmallIcon(R.drawable.ic_notification1)
+                .setContentTitle("Kraken HyperFan Release!")
+                .setContentText("Dispersing surronding smoke particles!")
+                //.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setColor(getResources().getColor(R.color.teal_700))
+                .build();
+
+        notificationManager.notify(2, notification);
+    }
+
 
 
     private void Disconnect()
