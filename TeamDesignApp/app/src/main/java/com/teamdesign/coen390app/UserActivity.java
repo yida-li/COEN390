@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Vibrator;
 
 public class UserActivity extends Activity {
 
@@ -202,7 +203,7 @@ public class UserActivity extends Activity {
                                     if( i>=100){
                                         if(counter >1){
                                             notificationText.setText("Air threshold is reached!");
-
+                                            Vibration();
                                             // if everything above works, open the runnig=true;
                                             running =true;
                                             counter--;
@@ -240,6 +241,19 @@ public class UserActivity extends Activity {
         public void stop() {
             bStop = true;
         }
+    }
+
+
+
+    private void Vibration(){
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+// Vibrate for 500 milliseconds
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+} else {
+    //deprecated in API 26 
+    v.vibrate(500);
+}
     }
 
 
