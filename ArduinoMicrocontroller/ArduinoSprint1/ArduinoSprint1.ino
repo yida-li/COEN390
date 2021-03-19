@@ -5,10 +5,8 @@ String string;
 boolean fanon = false;
 #define led 5
 int data = 0;
-int fanFlipOn = 0;
-int fanFlipOff = 0;
-int sensFlipOn = 0;
-int sensFlipOff = 0;
+bool fanFlip = false;
+bool sensFlip = true;
 
 void setup(){ 
 Serial.begin(9600);       // sets the serial port to 9600
@@ -76,11 +74,10 @@ while(Serial.available() > 0)
 void fanOn() 
 {
   digitalWrite(13, HIGH);   //Using pin 13 to power the relay circuit
-  if(fanFlipOn == 0)           // using a count so that nothing happens if on button or off button is spammed
+  if(fanFlip == false)           // using a count so that nothing happens if on button or off button is spammed
   {
     Serial.println("\n\n   You have turned OFF the fan"); // message that appears on java app
-    fanFlipOn++;
-    fanFlipOff = 0;
+    fanFlip == true;
   }
 delay(10);
 }
@@ -89,11 +86,10 @@ delay(10);
 void fanOff()  
 {
   digitalWrite(13, LOW);
-  if(fanFlipOff ==0)
+  if(fanFlip == true)
   {
     Serial.println("\n\n   You have turned ON the fan");
-    fanFlipOff++;
-    fanFlipOn = 0;
+    fanFlip = false;
   }
   delay(10);
 }
@@ -101,11 +97,10 @@ void fanOff()
 void SensOn()
 {
   digitalWrite(12,HIGH);
-  if (sensFlipOn == 0)
+  if (sensFlip == true)
   {
     Serial.println("\n\n  You have turned ON the Sensor");
-    sensFlipOn++;
-    sensFlipOff = 0;
+    sensFlip = false;
   }
   delay(10);
 }
@@ -113,11 +108,10 @@ void SensOn()
 void SensOff()
 {
   digitalWrite(12,LOW);
-  if (sensFlipOff == 0);
+  if (sensFlip == false);
   {
     Serial.println("\n\n  You have turned OFF the Sensor");
-    sensFlipOff++;
-    sensFlipOn = 0;
+    sensFlip = true;
   }
   delay(10);
 }
