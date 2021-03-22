@@ -33,14 +33,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Fan"
-            android:textSize="18sp" />
+            android:thumb="@drawable/ic_notification1"
+            android:textSize="24sp" />
 
         <Switch
             android:id="@+id/sensSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sensor"
-            android:textSize="18sp" />
+            android:thumb="@drawable/ic_notification2"
+            android:textSize="24sp" />
 
         <CheckBox
             android:id="@+id/chkScroll"

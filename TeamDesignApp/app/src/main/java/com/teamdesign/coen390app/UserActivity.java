@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Switch;
@@ -39,8 +40,6 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
 import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_3_ID;
 
 public class UserActivity extends Activity {
-
-
     // Notification manager initialization
     private NotificationManagerCompat notificationManager;
 
@@ -76,8 +75,8 @@ public class UserActivity extends Activity {
     private CheckBox chkReceiveText;
 
     // switch to turn the fan and sensor off
-    Switch sensSwitch, fanSwitch;
-    boolean sensSwitchState, fanSwitchState;
+    private  Switch sensSwitch, fanSwitch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,64 +106,35 @@ public class UserActivity extends Activity {
         mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
+        //switch setup for the fan
         fanSwitch = findViewById(R.id.fanSwitch);
-        fanSwitchState = fanSwitch.isChecked();
+        fanSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    turnOnFan();
+                }else {
+                    turnOffFan();
+                }
+            }
+        });
 
-        if(fanSwitchState == true)
-        {
-            turnOnFan();
-        }
-
-        if(fanSwitchState == false)
-        {
-            turnOffFan();
-        }
-
+        //switch setup for the sensor
+        //at start set to on
         sensSwitch = findViewById(R.id.sensSwitch);
-        sensSwitchState = sensSwitch.isChecked();
+        sensSwitch.setChecked(true);
+        sensSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    turnOnSensor();
+                }else {
+                    turnOffSensor();
+                }
+            }
+        });
 
-        if(sensSwitchState == true)
-        {
-            turnOnSensor();
-        }
-
-        if(sensSwitchState == false)
-        {
-            turnOffSensor();
-        }
-
-       
-        //
         notificationManager = NotificationManagerCompat.from(this);
-
-
-        btnOn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                turnOnFan();      //method to turn on
-            }
-        });
-
-        btnOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                turnOffFan();   //method to turn off
-            }
-        });
-
-        btnDis.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Disconnect(); //close connection and close the application
-            }
-        });
-
-         */
 
         mBtnClearInput.setOnClickListener(new OnClickListener() {
 
