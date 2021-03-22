@@ -21,10 +21,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Vibrator;
@@ -40,6 +38,8 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
 import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_3_ID;
 
 public class UserActivity extends Activity {
+
+
     // Notification manager initialization
     private NotificationManagerCompat notificationManager;
 
@@ -74,8 +74,13 @@ public class UserActivity extends Activity {
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
 
-    // switch to turn the fan and sensor off
-    private  Switch sensSwitch, fanSwitch;
+    // Buttons to turn on/off/ and disconnect the fan
+
+    Button btnOn, btnOff, btnDis,btnLog,BtnProfile;
+//log page timer
+    public static TextView timeView;
+    public static int a;
+    public static int r;
 
 
     @Override
@@ -105,36 +110,60 @@ public class UserActivity extends Activity {
         scrollView = (ScrollView) findViewById(R.id.viewScroll);
         mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
+        btnOn = (Button)findViewById(R.id.button);
+        btnOff = (Button)findViewById(R.id.button2);
+        btnDis = (Button)findViewById(R.id.button3);
+        btnLog=(Button)findViewById(R.id.button5);
+        BtnProfile=(Button) findViewById(R.id.button4);
 
-        //switch setup for the fan
-        fanSwitch = findViewById(R.id.fanSwitch);
-        fanSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        BtnProfile.setOnClickListener(new View.OnClickListener(){
+
+
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    turnOnFan();
-                }else {
-                    turnOffFan();
-                }
+            public void onClick(View v) {
+                Intent Intent =new Intent (UserActivity.this,ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnLog.setOnClickListener(new View.OnClickListener(){
+
+
+            @Override
+            public void onClick(View v) {
+                Intent Intent =new Intent (UserActivity.this,LogActivity.class);
+                startActivity(intent);
             }
         });
 
-        //switch setup for the sensor
-        //at start set to on
-        sensSwitch = findViewById(R.id.sensSwitch);
-        sensSwitch.setChecked(true);
-        sensSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    turnOnSensor();
-                }else {
-                    turnOffSensor();
-                }
-            }
-        });
-
+        timeView = (TextView)findViewById(R.id.time_view);
+                                       //
         notificationManager = NotificationManagerCompat.from(this);
+
+        btnOn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                turnOnFan();      //method to turn on
+            }
+        });
+
+        btnOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                turnOffFan();   //method to turn off
+            }
+        });
+
+        btnDis.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Disconnect(); //close connection and close the application
+            }
+        });
 
         mBtnClearInput.setOnClickListener(new OnClickListener() {
 
@@ -212,17 +241,19 @@ public class UserActivity extends Activity {
                                      */ 
                                     
                                     String firstInt = strInput.replaceFirst(".*?(\\d+).*", "$1");
-                                    int i;
+                                    //int i; needs  to be static i=a
                                     try {
-                                        i = Integer.parseInt(firstInt.trim());
+                                        a = Integer.parseInt(firstInt.trim());
                                     }
                                     catch (NumberFormatException e)
                                     {
-                                        i = 0;
+                                        a= 0;
                                     }
 
-                                    if( i>=100){
+                                    if( a>=100){
                                         if(counter >1){
+                                            //to be like an output for the log.
+                                            r=a;
                                             notificationText.setText("Air threshold is reached!");
                                             sendAlert1();
                                             sendAlert2();
@@ -362,34 +393,9 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         }
     }
 
-    private void turnOnSensor()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("SO".toString().getBytes());
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-    }
-    private void turnOffSensor()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("SF".toString().getBytes());
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-    }
+
+
+
 
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
