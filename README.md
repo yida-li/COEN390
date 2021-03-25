@@ -68,8 +68,18 @@ Engineering Product Design Project
 
 > # Pictures
 
-> > # User Interface Prototype
+> > _______________________________________________________________________________________________________________________________________ 
+> > 
+> > _______________________________________________________________________________________________________________________________________
 
+> > [Sprint 1]
+ 
+> > _______________________________________________________________________________________________________________________________________ 
+> > 
+> > _______________________________________________________________________________________________________________________________________
+
+> > >  # User Interface Prototype
+ 
 > > > > > [activity_mail.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignPropType/app/src/main/res/layout/activity_main.xml)
 
 > > > > > ![til](photos/q1.PNG)
@@ -82,13 +92,13 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/q3.PNG)
 
-> > # Fan/Led connection layout page for Prototype
+> > > # Fan/Led connection layout page for Prototype
 
 > > > > > [activity_led_control.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignLEDApk/app/src/main/res/layout/activity_led_control.xml)
 
 > > > > > ![til](photos/z2.PNG)
 
-> > # Blue connection layout page for Prototype
+> > > # Blue connection layout page for Prototype
 
 > > > > > [activity_main_screen.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignBTDatapath/app/src/main/res/layout/activity_main_screen.xml)
 
@@ -98,7 +108,7 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/b2.jpg)
 
-> > # [Sprint 1 App Prototype](https://github.com/yida-li/COEN390/tree/master/TeamDesignApp)
+> > > # [App Prototype](https://github.com/yida-li/COEN390/tree/master/TeamDesignApp)
 
 > > > > > [activity_user_activity.xml](https://github.com/yida-li/COEN390/blob/master/TeamDesignApp/app/src/main/res/layout/activity_user_activity.xml)
 
@@ -106,13 +116,44 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/y4.jpg)
 
-> > # Protoype flow diagram
+
+
+> > > # Protoype flow diagram
 
 > > > > > ![til](photos/y1.PNG)
 
-> > # Protoype System Architecture
+> > > # Protoype System Architecture
 
 > > > > > ![til](photos/y3.PNG)
+
+
+> > _______________________________________________________________________________________________________________________________________ 
+> > 
+> > _______________________________________________________________________________________________________________________________________
+
+> > [Sprint 2]
+ 
+> > _______________________________________________________________________________________________________________________________________ 
+> > 
+> > _______________________________________________________________________________________________________________________________________
+
+
+> > > # User Interface with automatic/manual settings
+
+> > > > > ![til](photos/y5.png)
+
+> > > # Notifications Alerts PopUp
+
+> > > > > ![til](photos/y6.png)
+
+> > > # Notifications Alerts During LockScreen
+
+> > > > > ![til](photos/y7.png)
+
+> > > # Addtional Page recording/displaying data
+
+> > > > > ![til](photos/y8.png)
+
 
 # Edit this page
 
