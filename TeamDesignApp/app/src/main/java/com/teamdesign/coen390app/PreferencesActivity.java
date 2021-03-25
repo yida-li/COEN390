@@ -40,7 +40,6 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
     @Override
     protected void onPause()
     {
-
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
@@ -60,8 +59,6 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
                 pref.setSummary(entry.getValue().toString());
             }
         }
-
         super.onResume();
     }
-
 }

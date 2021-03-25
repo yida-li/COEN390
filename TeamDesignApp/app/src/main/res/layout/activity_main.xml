@@ -17,16 +17,21 @@
             android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="90dp"
-            android:text="Search"/>
+
+            android:text="Search" />
 
         <Button
             android:id="@+id/connect"
+            android:layout_width="133dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:text="Detailed Interface" />
+        <Button
+            android:id="@+id/connect1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="50dp"
-            android:text="Connect" />
-
+            android:layout_marginLeft="20dp"
+            android:text="Simple Interface" />
 
 
     </LinearLayout>

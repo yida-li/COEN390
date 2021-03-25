@@ -1,4 +1,9 @@
 package com.teamdesign.coen390app;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,8 +45,9 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_1_ID;
 import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
 import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_3_ID;
 
-public class UserActivity extends Activity {
+public class UserSimpleActivity extends Activity {
 
+    public int cnt = 0;
 
     // intially default mode
     protected boolean UserSelectAlertType=true;
@@ -58,12 +64,13 @@ public class UserActivity extends Activity {
     // maximum threshold value
     private int imax = 0;
 
+    private boolean  fanThresholdFlag=true;
 
     // Integer value used for time system
     private int seconds = 0;
 
     // Integer counter used manipulate the threshold Notification
-    public int counter =2;
+    public int counter =10;
 
     // TextView layout to display a notification if Air PPM reach a certain threshold
     private TextView notificationText;
@@ -101,7 +108,7 @@ public class UserActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // setContentView basically connects this instance to the designated xml file
-        setContentView(R.layout.activity_user_activity);
+        setContentView(R.layout.activity_user_simple);
 
         ActivityHelper.initialize(this);
         if (savedInstanceState != null) {
@@ -121,16 +128,19 @@ public class UserActivity extends Activity {
         chkScroll = (CheckBox) findViewById(R.id.chkScroll);
         chkReceiveText = (CheckBox) findViewById(R.id.chkReceiveText);
         scrollView = (ScrollView) findViewById(R.id.viewScroll);
-        mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
+
+
+        // mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
 
-        detailButton=(Button)findViewById(R.id.detailButton);
-        logButton=(Button)findViewById(R.id.logButton);
-        toggleAlertButton=(ToggleButton)findViewById(R.id.toggleAlertButton);
-        toggleFanButton=(ToggleButton)findViewById(R.id.toggleFanButton);
-        FanButton=(ToggleButton)findViewById(R.id.toggleButtonMan);
+        //  detailButton=(Button)findViewById(R.id.detailButton);
+        //  logButton=(Button)findViewById(R.id.logButton);
+        //   toggleAlertButton=(ToggleButton)findViewById(R.id.toggleAlertButton);
+        //  toggleFanButton=(ToggleButton)findViewById(R.id.toggleFanButton);
+        //FanButton=(ToggleButton)findViewById(R.id.toggleButtonMan);
 
+        /*
         toggleAlertButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
 
@@ -141,6 +151,9 @@ public class UserActivity extends Activity {
             }
         });
 
+         */
+
+        /*
         toggleFanButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 UserSelectFanType=false;
@@ -149,20 +162,24 @@ public class UserActivity extends Activity {
                 // The toggle is disabled
             }
         });
-
+        /*
+/*
         FanButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked && UserSelectFanType == false) {
-             //   UserSelectFanManual=false;
+                //   UserSelectFanManual=false;
                 turnOffFan();
             } else
             if (!isChecked && UserSelectFanType == false)
             {
-               // UserSelectFanManual=true;
+                // UserSelectFanManual=true;
                 turnOnFan();
                 // The toggle is disabled
             }
         });
 
+
+ */
+        /*
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -185,6 +202,8 @@ public class UserActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+         */
 
         //switch setup for the fan
         /*
@@ -216,7 +235,7 @@ public class UserActivity extends Activity {
         });
 */
         notificationManager = NotificationManagerCompat.from(this);
-
+/*
         mBtnClearInput.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -225,8 +244,10 @@ public class UserActivity extends Activity {
                 notificationText.setText("");
             }
         });
+
+ */
     } // end of Oncreate function
-    
+
     /*
     Thread based child-0process datapath to constantly uplaod stream of
      */
@@ -270,20 +291,32 @@ public class UserActivity extends Activity {
                             mTxtReceive.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mTxtReceive.append(strInput);
 
-                                     /*   
+                                    if (cnt ==0) {
+                                        mTxtReceive.append("");
+                                        mTxtReceive.append("\n");
+                                        cnt++;
+                                    }
+
+
+
+
+                                    /*
                                      * TODO : Sprint 2 Features PlaceHolders                  March 15
-                                     */ 
-                                    
-                                     /*   
+                                     */
+
+
+
+
+
+                                    /*
                                      * TODO : Sprint 3 Features PlaceHolders                  March 29
-                                     */ 
-                                    
-                                    /*   
-                                     * TODO : Addition features Placeholders                  
-                                     */ 
-                                    
+                                     */
+
+                                    /*
+                                     * TODO : Addition features Placeholders
+                                     */
+
                                     String firstInt = strInput.replaceFirst(".*?(\\d+).*", "$1");
                                     int i;
                                     try {
@@ -294,28 +327,50 @@ public class UserActivity extends Activity {
                                         i = 151;
                                     }
 
-                                    if( i>=300 && UserSelectFanType == true)
-				                  {
-			                		if(imax < i)
-				                	{ imax = i;}
+                                    if( i>=300 && UserSelectFanType == true && fanThresholdFlag==true)
+                                    {
+                                        //  if(imax < i)
+                                        // { imax = i;}
+
+
                                         if(counter >1)
                                         {
-                                            notificationText.setText("Air threshold is reached! " + imax);
-                                            sendAlertOption();
+                                            if(imax < i)
+                                            {imax = i;}
+                                            notificationText.setText(" Air threshold is reached!" + imax);
+                                            //  sendAlertOption();
+                                            mTxtReceive.append("         Air particles detected !");
+                                            mTxtReceive.append("\n");
 
+
+
+                                            // mTxtReceive.append("Air p articles detected !:"+"\n");
                                             running =true;
                                             counter--;
+
+
+                                            fanThresholdFlag=false;
                                         }
-					            	AutoturnOnFan();
-                                   }
-				else
-				           {
-			        	   if(i<=150 && UserSelectFanType == true)
-			        	   {
-					AutoturnOffFan();
-					running = false;
-					}
-				   }
+                                        AutoturnOnFan();
+                                    }
+                                    else
+                                    {
+                                        if(i<=150 && UserSelectFanType ==  true  && seconds !=0  && fanThresholdFlag==false)
+                                        {
+                                            AutoturnOffFan();
+                                            String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+                                            Date date = new Date();
+                                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd / 03 / yyyy");
+                                            String td = dateFormat.format(date);
+                                            running = false;
+                                            mTxtReceive.append("         "+ td+ " " +currentTime+"\n"+"         Smoke in PPM "+imax+"\n"+ "         Fan Duration: "+seconds+ " Seconds\n\n" );
+                                            seconds = 0;
+                                            imax = 0;
+                                            fanThresholdFlag=true;
+                                        }
+                                    }
+
                                     int txtLength = mTxtReceive.getEditableText().length();
                                     if(txtLength > mMaxChars){
                                         mTxtReceive.getEditableText().delete(0, txtLength - mMaxChars);
@@ -360,7 +415,7 @@ public class UserActivity extends Activity {
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
 } else {
-    //deprecated in API 26 
+    //deprecated in API 26
     v.vibrate(500);
 }
     }
@@ -370,6 +425,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     /*
     Sends Alert to user even if application is in background
      */
+
 
     public void sendAlertOption(){
         if(!UserSelectAlertType){
@@ -397,7 +453,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     }
 
 
-private void AutoturnOnFan()
+    private void AutoturnOnFan()
     {
         if (mBTSocket!=null)
         {
@@ -414,7 +470,7 @@ private void AutoturnOnFan()
 
     public void sendAlert1(){
 
-        Notification notification = new NotificationCompat.Builder(UserActivity.this,CHANNEL_1_ID)
+        Notification notification = new NotificationCompat.Builder(UserSimpleActivity.this,CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_notification2)
                 .setContentTitle("Smoke Particles Detected!")
                 .setContentText("Vibrate Mode Testing")
@@ -431,7 +487,7 @@ private void AutoturnOnFan()
 
     public void sendAlert2(){
 
-        Notification notification = new NotificationCompat.Builder(UserActivity.this,CHANNEL_2_ID)
+        Notification notification = new NotificationCompat.Builder(UserSimpleActivity.this,CHANNEL_2_ID)
                 .setSmallIcon(R.drawable.ic_notification1)
                 .setContentTitle("Kraken HyperFan Released!")
                 .setContentText("Silent Mode Testing!")
@@ -529,7 +585,7 @@ private void AutoturnOnFan()
         Log.d(TAG, "Paused");
         super.onPause();
         if(running ==true && wasRunning==true)
-        running = false;
+            running = false;
     }
 
     // If the activity is resumed,start the stopwatch again if it was running previously.
@@ -579,7 +635,7 @@ private void AutoturnOnFan()
 
         @Override
         protected void onPreExecute() {
-            progressDialog = ProgressDialog.show(UserActivity.this, "Hold on", "Connecting");
+            progressDialog = ProgressDialog.show(UserSimpleActivity.this, "Hold on", "Connecting");
         }
 
         @Override

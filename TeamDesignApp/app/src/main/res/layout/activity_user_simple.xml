@@ -6,41 +6,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UserActivity">
+    tools:context=".UserSimpleActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/logButton"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:text="Log Page" />
-
-        <Button
-            android:id="@+id/btnClearInput"
-            android:layout_width="150dp"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0"
-            android:text="Clear Input" />
-
-        <Button
-            android:id="@+id/detailButton"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:text="Details" />
-
-
-    </LinearLayout>
+        android:orientation="horizontal"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="450dp"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+
+            android:text="LOG PAGE"
+            android:textColor="#0D28BC"
+            android:textColorHighlight="#FFFFFF"
+            android:textSize="28sp" />
 
         <CheckBox
             android:id="@+id/chkScroll"
@@ -83,7 +70,8 @@
             android:gravity="center"
             android:inputType="textPersonName"
             android:textColor="#EF0C0C"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,69 +86,22 @@
                 android:gravity="center"
                 android:text="TextView"
                 android:textColor="@color/teal_700"
-                android:textSize="24dp" />
+                android:textSize="24dp"
+                android:visibility="invisible" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textAlertView"
-                android:layout_width="205dp"
-                android:layout_height="46dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="User Mode" />
-
-            <ToggleButton
-                android:id="@+id/toggleAlertButton"
-                android:layout_width="202dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1"
-                android:textOff="Silent"
-                android:textOn="Vibrate" />
-
-        </LinearLayout>
+            android:orientation="horizontal"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"/>
 
-            <TextView
-                android:id="@+id/textFanView"
-                android:layout_width="205dp"
-                android:layout_height="46dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Fan Mode" />
-
-            <ToggleButton
-                android:id="@+id/toggleFanButton"
-                android:layout_width="202dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1"
-                android:textOff="Automatic"
-                android:textOn="Manual" />
-
-        </LinearLayout>
     </LinearLayout>
-
-    <ToggleButton
-        android:id="@+id/toggleButtonMan"
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="ToggleButton"
-        android:textOff="Turn OFF Fan"
-        android:textOn="Turn ON Fan" />
 
 
 </LinearLayout>
