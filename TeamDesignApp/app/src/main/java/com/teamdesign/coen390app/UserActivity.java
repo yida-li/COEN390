@@ -12,6 +12,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,6 +52,7 @@ public class UserActivity extends Activity {
     private ToggleButton toggleAlertButton;
     private ToggleButton toggleFanButton;
     private ToggleButton FanButton;
+    private ToggleButton toggleSensorButton;
 
     // Notification manager initialization
     private NotificationManagerCompat notificationManager;
@@ -92,9 +94,6 @@ public class UserActivity extends Activity {
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
 
-    // switch to turn the fan and sensor off
-    private  Switch sensSwitch, fanSwitch;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +129,7 @@ public class UserActivity extends Activity {
         toggleAlertButton=(ToggleButton)findViewById(R.id.toggleAlertButton);
         toggleFanButton=(ToggleButton)findViewById(R.id.toggleFanButton);
         FanButton=(ToggleButton)findViewById(R.id.toggleButtonMan);
+        toggleSensorButton=(ToggleButton)findViewById((R.id.toggleButtonSensor));
 
         toggleAlertButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -153,13 +153,26 @@ public class UserActivity extends Activity {
         FanButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked && UserSelectFanType == false) {
              //   UserSelectFanManual=false;
-                turnOffFan();
+                turnOnFan();
             } else
             if (!isChecked && UserSelectFanType == false)
             {
                // UserSelectFanManual=true;
-                turnOnFan();
+                turnOffFan();
                 // The toggle is disabled
+            }
+        });
+
+        toggleSensorButton.setChecked(true);
+        toggleSensorButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked ) {
+                Log.d(TAG, "TURNING ON SENSOR");
+                turnOnSensor();
+            } else
+            if (!isChecked)
+            {
+                turnOffSensor();
+                Log.d(TAG, "TURNING OFF SENSOR");
             }
         });
 
@@ -186,35 +199,7 @@ public class UserActivity extends Activity {
             }
         });
 
-        //switch setup for the fan
-        /*
-        fanSwitch = findViewById(R.id.fanSwitch);
-        fanSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    turnOnFan();
-                }else {
-                    turnOffFan();
-                }
-            }
-        });
 
-        //switch setup for the sensor
-        //at start set to on
-        sensSwitch = findViewById(R.id.sensSwitch);
-        sensSwitch.setChecked(true);
-        sensSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    turnOnSensor();
-                }else {
-                    turnOffSensor();
-                }
-            }
-        });
-*/
         notificationManager = NotificationManagerCompat.from(this);
 
         mBtnClearInput.setOnClickListener(new OnClickListener() {
