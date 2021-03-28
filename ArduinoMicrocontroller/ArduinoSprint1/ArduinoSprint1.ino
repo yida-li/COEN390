@@ -6,6 +6,7 @@ String string;
 int data = 0;
 bool fanFlip = true;
 bool sensFlip = false;
+bool autoFlip = false;
 
 void setup(){ 
 Serial.begin(9600);       // sets the serial port to 9600
@@ -20,14 +21,14 @@ digitalWrite(12, HIGH);
 void loop()
 {
   //if i remove this serial print my buttons do not work 
-  Serial.println(string); //debugger
+  //Serial.println(string); //debugger
   if (sensFlip == false)
   {
      data = analogRead(A0);        // Assigns data readings to integer data
      Serial.print("\n Air Quality in PPM is: ");
      Serial.print(data);          // send this value to app
   }
-  delay(2000);                //Every 2 seconds it will send to java and new reading
+  delay(500);                //Every 2 seconds it will send to java and new reading
     
   if (Serial.available() > 0)
   {string = "";
@@ -78,7 +79,24 @@ void loop()
     SensOff();                   // see comment above  
     //Serial.println(string); //debug
     delay(100);
-  }    
+  }
+  
+  if(string =="AO" && autoFlip == true)
+  {
+    autoOn();                   // see comment above  
+    //Serial.println(string); //debug
+    autoFlip = false;
+    delay(100);
+    
+  }
+  
+  if(string =="AF" && autoFlip == false)
+  {
+    autoOff();                   // see comment above  
+    //Serial.println(string); //debug
+    delay(100);
+    autoFlip = true;
+  }          
 }
 
 
@@ -108,5 +126,19 @@ void SensOff()
 {
   digitalWrite(12,LOW);
   Serial.println("\n\n  You have turned OFF the Sensor");
+  delay(10);
+}
+
+void autoOn() 
+{
+  digitalWrite(13, LOW);   
+  Serial.println("\n\n   Fan turned ON Automatically"); 
+  delay(10);
+}
+
+void autoOff()  
+{
+  digitalWrite(13, HIGH);
+  Serial.println("\n\n   Fan turned OFF Automatically ");
   delay(10);
 }

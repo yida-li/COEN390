@@ -65,7 +65,7 @@ public class UserActivity extends Activity {
     private int seconds = 0;
 
     // Integer counter used manipulate the threshold Notification
-    public int counter =2;
+    public int counter =5;
 
     // TextView layout to display a notification if Air PPM reach a certain threshold
     private TextView notificationText;
@@ -276,26 +276,32 @@ public class UserActivity extends Activity {
                                     }
                                     catch (NumberFormatException e)
                                     {
-                                        i = 151;
+                                        i = 451;
                                     }
 
-                                    if( i>=300 && UserSelectFanType == true)
+                                    if( i>=550 && UserSelectFanType == true)
 				                  {
-			                		if(imax < i)
-				                	{ imax = i;}
+			                		//if(imax < i)
+				                	//{ imax = i;}
                                         if(counter >1)
                                         {
-                                            notificationText.setText("Air threshold is reached! " + imax);
+                                            //if(imax < i)
+                                            //{imax = i;}
+                                            //notificationText.setText("Air threshold is reached! " + imax);
                                             sendAlertOption();
 
                                             running =true;
                                             counter--;
                                         }
 					            	AutoturnOnFan();
+                                      if(imax < i)
+                                      {imax = i;}
+                                      notificationText.setText("Air threshold is reached! " + imax);
                                    }
+
 				else
 				           {
-			        	   if(i<=150 && UserSelectFanType == true)
+			        	   if(i<450 && UserSelectFanType == true)
 			        	   {
 					AutoturnOffFan();
 					running = false;
