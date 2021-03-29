@@ -116,7 +116,9 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/y4.jpg)
 
-> > > # Protoype flow diagram
+
+> > > # Protoype wireframe diagram
+
 
 > > > > > ![til](photos/y1.PNG)
 
@@ -150,9 +152,10 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/y8.png)
 
-> > > # Updated flow diagram
+> > > # Updated wireframe diagram
 
-> > > > > ![til](photos/y8.png)
+> > > > > ![til](photos/y9.PNG)
+
 
 # Edit this page
 
