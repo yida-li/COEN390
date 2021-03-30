@@ -161,13 +161,13 @@
             android:orientation="horizontal">
 
             <ToggleButton
-                android:id="@+id/toggleButtonSensor"
+                android:id="@+id/toggleButtonHumidity"
                 android:layout_width="195dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="ToggleButton"
-                android:textOff="Sensor Status: OFF"
-                android:textOn="Sensor Status: ON" />
+                android:textOff="Humiditfier Status: OFF"
+                android:textOn="Humidifier Status: ON" />
 
             <ToggleButton
                 android:id="@+id/toggleButtonMan"

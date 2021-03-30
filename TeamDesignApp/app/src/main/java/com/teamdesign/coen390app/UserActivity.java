@@ -1,4 +1,4 @@
-package com.teamdesign.coen390app;
+                                            package com.teamdesign.coen390app;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,11 +48,12 @@ public class UserActivity extends Activity {
     protected boolean UserSelectAlertType=true;
     protected boolean UserSelectFanType= true;
     protected boolean UserSelectFanManual =true;
+    protected boolean autoFlip = false;
 
     private ToggleButton toggleAlertButton;
     private ToggleButton toggleFanButton;
     private ToggleButton FanButton;
-    private ToggleButton toggleSensorButton;
+    private ToggleButton toggleHumidityButton;
 
     // Notification manager initialization
     private NotificationManagerCompat notificationManager;
@@ -129,7 +130,7 @@ public class UserActivity extends Activity {
         toggleAlertButton=(ToggleButton)findViewById(R.id.toggleAlertButton);
         toggleFanButton=(ToggleButton)findViewById(R.id.toggleFanButton);
         FanButton=(ToggleButton)findViewById(R.id.toggleButtonMan);
-        toggleSensorButton=(ToggleButton)findViewById((R.id.toggleButtonSensor));
+        toggleHumidityButton=(ToggleButton)findViewById((R.id.toggleButtonHumidity));
 
         toggleAlertButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -141,12 +142,19 @@ public class UserActivity extends Activity {
             }
         });
 
+        FanButton.setEnabled(false);
         toggleFanButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 UserSelectFanType=false;
+                FanButton.setEnabled(true);
+
             } else {
                 UserSelectFanType=true;
-                // The toggle is disabled
+                FanButton.setEnabled(false);
+                FanButton.setChecked(false);
+                turnOffFan();
+
+
             }
         });
 
@@ -163,16 +171,15 @@ public class UserActivity extends Activity {
             }
         });
 
-        toggleSensorButton.setChecked(true);
-        toggleSensorButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        toggleHumidityButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked ) {
-                Log.d(TAG, "TURNING ON SENSOR");
-                turnOnSensor();
+                Log.d(TAG, "TURNING ON Humidifier");
+                turnOnHumidity();
             } else
             if (!isChecked)
             {
-                turnOffSensor();
-                Log.d(TAG, "TURNING OFF SENSOR");
+                turnOffHumidity();
+                Log.d(TAG, "TURNING OFF Humidifier");
             }
         });
 
@@ -257,6 +264,7 @@ public class UserActivity extends Activity {
                                 public void run() {
                                     mTxtReceive.append(strInput);
 
+
                                      /*   
                                      * TODO : Sprint 2 Features PlaceHolders                  March 15
                                      */ 
@@ -276,37 +284,38 @@ public class UserActivity extends Activity {
                                     }
                                     catch (NumberFormatException e)
                                     {
-                                        i = 451;
+                                        i = 361;
                                     }
+                                    Log.d(TAG, String.valueOf(i));
 
-                                    if( i>=550 && UserSelectFanType == true)
-				                  {
-			                		//if(imax < i)
-				                	//{ imax = i;}
-                                        if(counter >1)
-                                        {
-                                            //if(imax < i)
-                                            //{imax = i;}
-                                            //notificationText.setText("Air threshold is reached! " + imax);
-                                            sendAlertOption();
+                                    if( i>=390 && UserSelectFanType == true && autoFlip == false)
+                                      {
+                                        //if(imax < i)
+                                        //{ imax = i;}
+                                            if(counter >1)
+                                            {
+                                                //if(imax < i)
+                                                //{imax = i;}
+                                                //notificationText.setText("Air threshold is reached! " + imax);
+                                                sendAlertOption();
 
-                                            running =true;
-                                            counter--;
-                                        }
-					            	AutoturnOnFan();
-                                      if(imax < i)
-                                      {imax = i;}
-                                      notificationText.setText("Air threshold is reached! " + imax);
-                                   }
+                                                running =true;
+                                                counter--;
+                                            }
+                                        AutoturnOnFan();
+                                          if(imax < i)
+                                          {imax = i;}
+                                          notificationText.setText("Air threshold is reached! " + imax);
+                                          autoFlip = true;
+                                       }
 
-				else
-				           {
-			        	   if(i<450 && UserSelectFanType == true)
-			        	   {
-					AutoturnOffFan();
-					running = false;
-					}
-				   }
+                                    if(i<360 && UserSelectFanType == true && autoFlip == true)
+                                       {
+                                        AutoturnOffFan();
+                                        running = false;
+                                        autoFlip = false;
+                                       }
+
                                     int txtLength = mTxtReceive.getEditableText().length();
                                     if(txtLength > mMaxChars){
                                         mTxtReceive.getEditableText().delete(0, txtLength - mMaxChars);
@@ -325,7 +334,7 @@ public class UserActivity extends Activity {
                         }
 
                     }
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                 }
             } catch (IOException e) {
 // TODO Auto-generated catch block
@@ -371,7 +380,6 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     }
 
 
-
     private void AutoturnOffFan()
     {
         if (mBTSocket!=null)
@@ -379,12 +387,15 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             try
             {
                 mBTSocket.getOutputStream().write("AF".toString().getBytes());
+                Log.d(TAG, "AutoturnOffFan: AF");
+
             }
             catch (IOException e)
             {
                 msg("Error");
             }
         }
+        FanButton.setChecked(false);
     }
 
 
@@ -395,6 +406,8 @@ private void AutoturnOnFan()
             try
             {
                 mBTSocket.getOutputStream().write("AO".toString().getBytes());
+                FanButton.setChecked(true);
+                Log.d(TAG, "AutoturnOnFan: AO");
             }
             catch (IOException e)
             {
@@ -457,6 +470,7 @@ private void AutoturnOnFan()
             try
             {
                 mBTSocket.getOutputStream().write("TF".toString().getBytes());
+                Log.d(TAG, "turnOffFan: TF");
             }
             catch (IOException e)
             {
@@ -471,6 +485,7 @@ private void AutoturnOnFan()
             try
             {
                 mBTSocket.getOutputStream().write("TO".toString().getBytes());
+                Log.d(TAG, "turnOnFan: TO");
             }
             catch (IOException e)
             {
@@ -479,13 +494,14 @@ private void AutoturnOnFan()
         }
     }
 
-    private void turnOnSensor()
+    private void turnOnHumidity()
     {
         if (mBTSocket!=null)
         {
             try
             {
-                mBTSocket.getOutputStream().write("SO".toString().getBytes());
+                mBTSocket.getOutputStream().write("HO".toString().getBytes());
+                Log.d(TAG, "turnOnHumidity: HO");
             }
             catch (IOException e)
             {
@@ -493,13 +509,14 @@ private void AutoturnOnFan()
             }
         }
     }
-    private void turnOffSensor()
+    private void turnOffHumidity()
     {
         if (mBTSocket!=null)
         {
             try
             {
-                mBTSocket.getOutputStream().write("SF".toString().getBytes());
+                mBTSocket.getOutputStream().write("HF".toString().getBytes());
+                Log.d(TAG, "turnOffHumidity: HF");
             }
             catch (IOException e)
             {

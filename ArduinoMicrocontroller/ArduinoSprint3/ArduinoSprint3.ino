@@ -1,4 +1,3 @@
-
 int sensorValue;
 char command;
 String string;

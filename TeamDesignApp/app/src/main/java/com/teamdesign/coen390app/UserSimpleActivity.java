@@ -324,10 +324,10 @@ public class UserSimpleActivity extends Activity {
                                     }
                                     catch (NumberFormatException e)
                                     {
-                                        i = 451;
+                                        i = 501;
                                     }
 
-                                    if( i>=550 && UserSelectFanType == true && fanThresholdFlag==true)
+                                    if( i>=570 && UserSelectFanType == true && fanThresholdFlag==true)
                                     {
                                         //  if(imax < i)
                                         // { imax = i;}
@@ -355,7 +355,7 @@ public class UserSimpleActivity extends Activity {
                                     }
                                     else
                                     {
-                                        if(i<=450 && UserSelectFanType ==  true  && seconds !=0  && fanThresholdFlag==false)
+                                        if(i<=501 && UserSelectFanType ==  true  && seconds !=0  && fanThresholdFlag==false)
                                         {
                                             AutoturnOffFan();
                                             String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());

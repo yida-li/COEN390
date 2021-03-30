@@ -26,7 +26,7 @@ F 3 "" H 2150 1800 50  0001 C CNN
 $EndComp
 Text HLabel 3100 1200 1    50   Input ~ 0
 5V
-Text HLabel 3100 2950 3    50   Input ~ 0
+Text HLabel 3100 3450 3    50   Input ~ 0
 GND
 Text HLabel 2500 1650 2    50   Output ~ 0
 Anolog_Out
@@ -43,31 +43,44 @@ Wire Wire Line
 $Comp
 L Transistor_BJT:2N3904 BJT
 U 1 1 60522CC5
-P 3000 2500
-F 0 "BJT" H 3190 2546 50  0000 L CNN
-F 1 "2N3904" H 3190 2455 50  0000 L CNN
-F 2 "Package_TO_SOT_THT:TO-92_Inline" H 3200 2425 50  0001 L CIN
-F 3 "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF" H 3000 2500 50  0001 L CNN
-	1    3000 2500
+P 3000 3000
+F 0 "BJT" H 3190 3046 50  0000 L CNN
+F 1 "2N3904" H 3190 2955 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 3200 2925 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF" H 3000 3000 50  0001 L CNN
+	1    3000 3000
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3100 2950 3100 2700
-Text HLabel 1900 2500 0    50   Input ~ 0
+	3100 3450 3100 3200
+Text HLabel 1900 3000 0    50   Input ~ 0
 AirSensorSwitch
 $Comp
 L Device:R R?
 U 1 1 60524AFD
-P 2350 2500
-F 0 "R?" V 2143 2500 50  0000 C CNN
-F 1 "10K" V 2234 2500 50  0000 C CNN
-F 2 "" V 2280 2500 50  0001 C CNN
-F 3 "~" H 2350 2500 50  0001 C CNN
-	1    2350 2500
+P 2350 3000
+F 0 "R?" V 2143 3000 50  0000 C CNN
+F 1 "1K" V 2234 3000 50  0000 C CNN
+F 2 "" V 2280 3000 50  0001 C CNN
+F 3 "~" H 2350 3000 50  0001 C CNN
+	1    2350 3000
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	2500 2500 2800 2500
+	2500 3000 2800 3000
 Wire Wire Line
-	2200 2500 1900 2500
+	2200 3000 1900 3000
+$Comp
+L Device:R R?
+U 1 1 605291CF
+P 3100 2450
+F 0 "R?" H 3170 2496 50  0000 L CNN
+F 1 "1K" H 3170 2405 50  0000 L CNN
+F 2 "" V 3030 2450 50  0001 C CNN
+F 3 "~" H 3100 2450 50  0001 C CNN
+	1    3100 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3100 2600 3100 2800
 $EndSCHEMATC

@@ -223,4 +223,234 @@ Wire Wire Line
 	1850 5150 2300 5150
 Text GLabel 8750 1200 0    50   Input ~ 0
 AirSensorSwitch
+$Comp
+L COEN390_Hardware:MQ-135 U?
+U 1 1 6060D5EE
+P 4000 1500
+AR Path="/604A3244/6060D5EE" Ref="U?"  Part="1" 
+AR Path="/6060D5EE" Ref="U?"  Part="1" 
+F 0 "U?" H 3681 1919 50  0000 C CNN
+F 1 "MQ-135" H 3681 1828 50  0000 C CNN
+F 2 "" H 4000 1500 50  0001 C CNN
+F 3 "" H 4000 1500 50  0001 C CNN
+	1    4000 1500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 900  5100 1550
+Wire Wire Line
+	4100 1650 4950 1650
+Wire Wire Line
+	4100 1350 4350 1350
+$Comp
+L Transistor_BJT:2N3904 BJT?
+U 1 1 6060D5FC
+P 4850 2200
+AR Path="/604A3244/6060D5FC" Ref="BJT?"  Part="1" 
+AR Path="/6060D5FC" Ref="BJT?"  Part="1" 
+F 0 "BJT?" H 5040 2246 50  0000 L CNN
+F 1 "2N3904" H 5040 2155 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 5050 2125 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF" H 4850 2200 50  0001 L CNN
+	1    4850 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4950 2650 4950 2400
+$Comp
+L Device:R R?
+U 1 1 6060D604
+P 4200 2200
+AR Path="/604A3244/6060D604" Ref="R?"  Part="1" 
+AR Path="/6060D604" Ref="R?"  Part="1" 
+F 0 "R?" V 3993 2200 50  0000 C CNN
+F 1 "220" V 4084 2200 50  0000 C CNN
+F 2 "" V 4130 2200 50  0001 C CNN
+F 3 "~" H 4200 2200 50  0001 C CNN
+	1    4200 2200
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4350 2200 4650 2200
+Wire Wire Line
+	4050 2200 3750 2200
+Wire Wire Line
+	4950 1650 4950 2000
+Text GLabel 3750 2200 0    50   Input ~ 0
+AirSensorSwitch
+$Comp
+L power:+5V #PWR?
+U 1 1 6062C9D2
+P 5100 900
+F 0 "#PWR?" H 5100 750 50  0001 C CNN
+F 1 "+5V" H 5115 1073 50  0000 C CNN
+F 2 "" H 5100 900 50  0001 C CNN
+F 3 "" H 5100 900 50  0001 C CNN
+	1    5100 900 
+	1    0    0    -1  
+$EndComp
+Text Notes 3650 850  0    50   ~ 10
+AirSensor Setup
+Text Notes 3850 3450 0    50   ~ 10
+Fan Setup
+$Comp
+L power:GND #PWR?
+U 1 1 60626E83
+P 5300 4500
+F 0 "#PWR?" H 5300 4250 50  0001 C CNN
+F 1 "GND" H 5305 4327 50  0000 C CNN
+F 2 "" H 5300 4500 50  0001 C CNN
+F 3 "" H 5300 4500 50  0001 C CNN
+	1    5300 4500
+	1    0    0    -1  
+$EndComp
+Text GLabel 5300 3600 1    50   Input ~ 0
+RelaySwitch
+Wire Wire Line
+	5100 4200 5300 4200
+Wire Wire Line
+	5300 4200 5300 4500
+Wire Wire Line
+	5300 3900 5300 3600
+Wire Wire Line
+	5100 3900 5300 3900
+Wire Wire Line
+	4350 4750 4300 4750
+Wire Wire Line
+	3900 4750 3800 4750
+Wire Wire Line
+	3400 4750 3250 4750
+$Comp
+L Device:Battery BT?
+U 1 1 606188CC
+P 4100 4750
+AR Path="/604AB21D/606188CC" Ref="BT?"  Part="1" 
+AR Path="/606188CC" Ref="BT?"  Part="1" 
+F 0 "BT?" V 4345 4750 50  0000 C CNN
+F 1 "9V" V 4254 4750 50  0000 C CNN
+F 2 "" V 4100 4810 50  0001 C CNN
+F 3 "~" V 4100 4810 50  0001 C CNN
+	1    4100 4750
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4350 4750 4350 4200
+Wire Wire Line
+	3250 4500 3250 4750
+$Comp
+L Device:Battery BT?
+U 1 1 606188C4
+P 3600 4750
+AR Path="/604AB21D/606188C4" Ref="BT?"  Part="1" 
+AR Path="/606188C4" Ref="BT?"  Part="1" 
+F 0 "BT?" V 3845 4750 50  0000 C CNN
+F 1 "9V" V 3754 4750 50  0000 C CNN
+F 2 "" V 3600 4810 50  0001 C CNN
+F 3 "~" V 3600 4810 50  0001 C CNN
+	1    3600 4750
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3250 3900 4350 3900
+$Comp
+L COEN390_Hardware:JQC-3FF(RELAY) U?
+U 1 1 606188BD
+P 4700 4050
+AR Path="/604AB21D/606188BD" Ref="U?"  Part="1" 
+AR Path="/606188BD" Ref="U?"  Part="1" 
+F 0 "U?" H 4725 4425 50  0000 C CNN
+F 1 "JQC-3FF(RELAY)" H 4725 4334 50  0000 C CNN
+F 2 "" H 4750 3900 50  0001 C CNN
+F 3 "" H 4750 3900 50  0001 C CNN
+	1    4700 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Motor:Fan_ALT M?
+U 1 1 606188B7
+P 3250 4200
+AR Path="/604AB21D/606188B7" Ref="M?"  Part="1" 
+AR Path="/606188B7" Ref="M?"  Part="1" 
+F 0 "M?" H 3460 4246 50  0000 L CNN
+F 1 "24V" H 3460 4155 50  0000 L CNN
+F 2 "" H 3250 4150 50  0001 C CNN
+F 3 "~" H 3250 4150 50  0001 C CNN
+	1    3250 4200
+	1    0    0    -1  
+$EndComp
+Text Notes 3800 5750 0    50   ~ 10
+Bluetooth Connection setup
+$Comp
+L power:GND #PWR?
+U 1 1 60630A39
+P 5550 6800
+F 0 "#PWR?" H 5550 6550 50  0001 C CNN
+F 1 "GND" H 5555 6627 50  0000 C CNN
+F 2 "" H 5550 6800 50  0001 C CNN
+F 3 "" H 5550 6800 50  0001 C CNN
+	1    5550 6800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6062EA0C
+P 5550 5900
+F 0 "#PWR?" H 5550 5750 50  0001 C CNN
+F 1 "+5V" H 5565 6073 50  0000 C CNN
+F 2 "" H 5550 5900 50  0001 C CNN
+F 3 "" H 5550 5900 50  0001 C CNN
+	1    5550 5900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4750 6750 4450 6750
+Connection ~ 4750 6750
+Wire Wire Line
+	4750 6900 4750 6750
+Wire Wire Line
+	4450 6900 4750 6900
+Wire Wire Line
+	5550 5900 5550 6300
+Wire Wire Line
+	5050 6600 4450 6600
+Wire Wire Line
+	5050 6750 4750 6750
+$Comp
+L COEN390_Hardware:HC-05(bluetooth) U?
+U 1 1 6061A274
+P 4350 6500
+AR Path="/604B18C9/6061A274" Ref="U?"  Part="1" 
+AR Path="/6061A274" Ref="U?"  Part="1" 
+F 0 "U?" H 3831 7119 50  0000 C CNN
+F 1 "HC-05(bluetooth)" H 3831 7028 50  0000 C CNN
+F 2 "" H 4350 6350 50  0001 C CNN
+F 3 "" H 4350 6350 50  0001 C CNN
+	1    4350 6500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 6300 5550 6300
+Wire Wire Line
+	4450 6450 5550 6450
+Wire Wire Line
+	5550 6450 5550 6800
+$Comp
+L power:GND #PWR?
+U 1 1 6065B9CA
+P 4950 2650
+F 0 "#PWR?" H 4950 2400 50  0001 C CNN
+F 1 "GND" H 4955 2477 50  0000 C CNN
+F 2 "" H 4950 2650 50  0001 C CNN
+F 3 "" H 4950 2650 50  0001 C CNN
+	1    4950 2650
+	1    0    0    -1  
+$EndComp
+Text GLabel 4350 1350 2    50   Output ~ 0
+AirQualityValue
+Wire Wire Line
+	4100 1550 5100 1550
+Text GLabel 5050 6750 2    50   Input ~ 0
+TX_Uno
+Text GLabel 5050 6600 2    50   Output ~ 0
+TX_Blue
 $EndSCHEMATC
