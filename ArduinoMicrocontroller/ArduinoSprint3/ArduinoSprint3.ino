@@ -13,6 +13,7 @@ int data = 0;
 bool fanFlip = true;
 bool autoFlip = true;
 bool atomizerFlip = true;
+bool autoAtomFlip = true;
 
 void setup(){ 
   
@@ -32,15 +33,16 @@ void loop()
   //Serial.println(string); //debugger
   data = analogRead(A0);        // Assigns data readings to integer data
   float humi = dht.readHumidity(); // records the humidity 
-  delay(10);
   float temp = dht.readTemperature(); //records the temperature
-  Serial.print("\n Air Quality in PPM is: ");
+  Serial.print("\n Air Quality: ");
   Serial.print(data);          // send this value to app
-  Serial.print("\n Air Humidity in %: ");
+  delay(1500);
+  Serial.print("\n Humidity: ");
   Serial.print(humi);
-  Serial.print("\n Air Temperature in Celcius  : ");
+  delay(1500);
+  Serial.print("\n Temperature: ");
   Serial.print(temp);
-  delay(1000);                //Every 2 seconds it will send to java and new reading
+  delay(1500);                //Every 2 seconds it will send to java and new reading
     
   if (Serial.available() > 0)
   {string = "";
@@ -92,7 +94,25 @@ void loop()
     delay(100);
     atomizerFlip = true;
   }
+  
+//AUTO ATOMIZER CONTROLS
+  if(string =="AHO" && autoAtomFlip == true)
+  {
+    autoAtomOn();                   // see comment above  
+    //Serial.println(string); //debug
+    delay(100);
+    autoAtomFlip = false;
+  }
 
+  if(string =="AHF" && autoAtomFlip == false)
+  {
+    autoAtomOff();                   // see comment above  
+    //Serial.println(string); //debug
+    delay(100);
+    autoAtomFlip = true;
+  }
+
+  
 //AUTOFAN CONTROLS
   if(string =="AO" && autoFlip == true)
   {
@@ -153,5 +173,19 @@ void autoOff()
 {
   digitalWrite(13, HIGH);
   Serial.println("\n\n   Fan turned OFF Automatically ");
+  delay(10);
+}
+
+void autoAtomOn()
+{
+  digitalWrite(12,HIGH);
+  Serial.println("\n\n  Humidifier turn ON Automatically");
+  delay(10);
+}
+
+void autoAtomOff()
+{
+  digitalWrite(12,LOW);
+  Serial.println("\n\n  Humidifier turn OFF Automatically");
   delay(10);
 }
