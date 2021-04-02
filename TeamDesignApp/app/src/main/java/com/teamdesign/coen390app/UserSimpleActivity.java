@@ -52,11 +52,8 @@ public class UserSimpleActivity extends Activity {
     // intially default mode
     protected boolean UserSelectAlertType=true;
     protected boolean UserSelectFanType= true;
-    protected boolean UserSelectFanManual =true;
 
-    private ToggleButton toggleAlertButton;
-    private ToggleButton toggleFanButton;
-    private ToggleButton FanButton;
+    private boolean autoFlip = false;
 
     // Notification manager initialization
     private NotificationManagerCompat notificationManager;
@@ -84,7 +81,7 @@ public class UserSimpleActivity extends Activity {
     private boolean mIsBluetoothConnected = false;
     private BluetoothDevice mDevice;
     private ProgressDialog progressDialog;
-    private static final String TAG = "BlueTest5-MainActivity";
+    private static final String TAG = "UserSimple Activity";
     private int mMaxChars = 50000;
     private UUID mDeviceUUID;
     private BluetoothSocket mBTSocket;
@@ -92,15 +89,9 @@ public class UserSimpleActivity extends Activity {
 
     // Widgets for Main screen layout
     private TextView mTxtReceive;
-    private Button mBtnClearInput;
-    private Button logButton;
-    private Button detailButton;
     private ScrollView scrollView;
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
-
-    // switch to turn the fan and sensor off
-    private  Switch sensSwitch, fanSwitch;
 
 
     @Override
@@ -133,119 +124,8 @@ public class UserSimpleActivity extends Activity {
         // mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
-
-        //  detailButton=(Button)findViewById(R.id.detailButton);
-        //  logButton=(Button)findViewById(R.id.logButton);
-        //   toggleAlertButton=(ToggleButton)findViewById(R.id.toggleAlertButton);
-        //  toggleFanButton=(ToggleButton)findViewById(R.id.toggleFanButton);
-        //FanButton=(ToggleButton)findViewById(R.id.toggleButtonMan);
-
-        /*
-        toggleAlertButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-
-                UserSelectAlertType=false;
-            } else {
-                UserSelectAlertType=true;
-                // The toggle is disabled
-            }
-        });
-
-         */
-
-        /*
-        toggleFanButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                UserSelectFanType=false;
-            } else {
-                UserSelectFanType=true;
-                // The toggle is disabled
-            }
-        });
-        /*
-/*
-        FanButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked && UserSelectFanType == false) {
-                //   UserSelectFanManual=false;
-                turnOffFan();
-            } else
-            if (!isChecked && UserSelectFanType == false)
-            {
-                // UserSelectFanManual=true;
-                turnOnFan();
-                // The toggle is disabled
-            }
-        });
-
-
- */
-        /*
-        logButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent( getApplicationContext(), LogActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-
-                startActivity(intent);
-            }
-        });
-
-        detailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent( getApplicationContext(), DetailActivity.class);
-
-
-                startActivity(intent);
-            }
-        });
-
-         */
-
-        //switch setup for the fan
-        /*
-        fanSwitch = findViewById(R.id.fanSwitch);
-        fanSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    turnOnFan();
-                }else {
-                    turnOffFan();
-                }
-            }
-        });
-
-        //switch setup for the sensor
-        //at start set to on
-        sensSwitch = findViewById(R.id.sensSwitch);
-        sensSwitch.setChecked(true);
-        sensSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    turnOnSensor();
-                }else {
-                    turnOffSensor();
-                }
-            }
-        });
-*/
         notificationManager = NotificationManagerCompat.from(this);
-/*
-        mBtnClearInput.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                mTxtReceive.setText("");
-                notificationText.setText("");
-            }
-        });
-
- */
     } // end of Oncreate function
 
     /*
@@ -255,6 +135,17 @@ public class UserSimpleActivity extends Activity {
 
         private boolean bStop = false;
         private Thread t;
+
+        //Read variables
+        private int airQ;
+        private double humi;
+        private double temp;
+
+        //specified
+        private int airQUpperThresh = 300;
+        private int airQLowerThresh = 280;
+        private int HumiUpperThresh;
+        private int HumiLowerThresh;
 
         public ReadInput() {
             t = new Thread(this, "Input Thread");
@@ -298,78 +189,78 @@ public class UserSimpleActivity extends Activity {
                                         cnt++;
                                     }
 
+                                    //TODO : INCLUDE THE DECIMAL POINTS
+                                    String firstInt = strInput.replaceAll(".*?(\\d+).*", "$1");
 
-
-
-                                    /*
-                                     * TODO : Sprint 2 Features PlaceHolders                  March 15
-                                     */
-
-
-
-
-
-                                    /*
-                                     * TODO : Sprint 3 Features PlaceHolders                  March 29
-                                     */
-
-                                    /*
-                                     * TODO : Addition features Placeholders
-                                     */
-
-                                    String firstInt = strInput.replaceFirst(".*?(\\d+).*", "$1");
-                                    int i;
-                                    try {
-                                        i = Integer.parseInt(firstInt.trim());
+                                    if((strInput.trim().charAt(0)) == 'A') {
+                                        try {
+                                            airQ = Integer.parseInt(firstInt.trim());
+                                        } catch (NumberFormatException e) {
+                                            airQ = airQLowerThresh + 1;
+                                        }
                                     }
-                                    catch (NumberFormatException e)
-                                    {
-                                        i = 501;
+                                    if((strInput.trim().charAt(0)) == 'H') {
+                                        try {
+                                            humi = Float.parseFloat(firstInt.trim());
+                                        } catch (NumberFormatException e) {
+                                            humi = 50.0;
+                                        }
+                                    }
+                                    if((strInput.trim().charAt(0)) == 'T') {
+                                        try {
+                                            temp = Float.parseFloat(firstInt.trim());
+                                        } catch (NumberFormatException e) {
+                                            temp = 22.0;
+                                        }
                                     }
 
-                                    if( i>=570 && UserSelectFanType == true && fanThresholdFlag==true)
-                                    {
-                                        //  if(imax < i)
-                                        // { imax = i;}
+                                    Log.d(TAG, "AQ = " + String.valueOf(airQ));
+                                    Log.d(TAG, "H = " + String.valueOf(humi));
+                                    Log.d(TAG, "T = " + String.valueOf(temp));
+                                    Log.d(TAG, "__INPUT__" + firstInt.trim());
 
+                                    if( airQ>=airQUpperThresh && UserSelectFanType == true && autoFlip == false)
+                                    {
 
                                         if(counter >1)
                                         {
-                                            if(imax < i)
-                                            {imax = i;}
                                             notificationText.setText(" Air threshold is reached!" + imax);
                                             //  sendAlertOption();
                                             mTxtReceive.append("         Air particles detected !");
                                             mTxtReceive.append("\n");
 
-
-
                                             // mTxtReceive.append("Air p articles detected !:"+"\n");
                                             running =true;
                                             counter--;
 
-
                                             fanThresholdFlag=false;
+                                            autoFlip = true;
                                         }
                                         AutoturnOnFan();
+                                        if(imax < airQ)
+                                        {imax = airQ;}
                                     }
-                                    else
-                                    {
-                                        if(i<=501 && UserSelectFanType ==  true  && seconds !=0  && fanThresholdFlag==false)
-                                        {
-                                            AutoturnOffFan();
-                                            String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
 
-                                            Date date = new Date();
-                                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd / 03 / yyyy");
-                                            String td = dateFormat.format(date);
-                                            running = false;
-                                            mTxtReceive.append("         "+ td+ " " +currentTime+"\n"+"         Smoke in PPM "+imax+"\n"+ "         Fan Duration: "+seconds+ " Seconds\n\n" );
-                                            seconds = 0;
-                                            imax = 0;
-                                            fanThresholdFlag=true;
-                                        }
+                                    if(airQ <= airQLowerThresh && UserSelectFanType ==  true  && seconds !=0  && autoFlip == true)
+                                    {
+                                        AutoturnOffFan();
+                                        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+                                        Date date = new Date();
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd / 03 / yyyy");
+                                        String td = dateFormat.format(date);
+                                        running = false;
+                                        mTxtReceive.append("         "+ td+ " " +currentTime+"\n"+
+                                                "         Smoke in PPM "+imax+"\n"+
+                                                "         Humidity in % "+ humi +"\n"+
+                                                "         Temperature in C "+ temp +"\n"+
+                                                "         Fan Duration: "+seconds+ " Seconds\n\n" );
+                                        seconds = 0;
+                                        imax = 0;
+                                        fanThresholdFlag=true;
+                                        autoFlip = false;
                                     }
+
 
                                     int txtLength = mTxtReceive.getEditableText().length();
                                     if(txtLength > mMaxChars){
@@ -389,7 +280,7 @@ public class UserSimpleActivity extends Activity {
                         }
 
                     }
-                    Thread.sleep(500);
+                    Thread.sleep(1500);
                 }
             } catch (IOException e) {
 // TODO Auto-generated catch block

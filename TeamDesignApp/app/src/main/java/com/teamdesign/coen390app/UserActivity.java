@@ -49,12 +49,14 @@ public class UserActivity extends Activity {
     protected boolean UserSelectFanType= true;
     protected boolean UserSelectFanManual =true;
     protected boolean autoFlip = false;
+    protected boolean humiFlip = true;
 
     // Notification manager initialization
     private NotificationManagerCompat notificationManager;
 
     // maximum threshold value
     private int imax = 0;
+    private double humiMax = 0;
 
     // Integer value used for time system
     private int seconds = 0;
@@ -74,7 +76,7 @@ public class UserActivity extends Activity {
     private boolean mIsBluetoothConnected = false;
     private BluetoothDevice mDevice;
     private ProgressDialog progressDialog;
-    private static final String TAG = "BlueTest5-MainActivity";
+    private static final String TAG = "Main Activity";
     private int mMaxChars = 50000;
     private UUID mDeviceUUID;
     private BluetoothSocket mBTSocket;
@@ -141,18 +143,21 @@ public class UserActivity extends Activity {
         });
 
         FanButton.setEnabled(false);
+        toggleHumidityButton.setEnabled((false));
         toggleFanButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 UserSelectFanType=false;
                 FanButton.setEnabled(true);
+                toggleHumidityButton.setEnabled((true));
 
             } else {
                 UserSelectFanType=true;
                 FanButton.setEnabled(false);
                 FanButton.setChecked(false);
+                toggleHumidityButton.setEnabled(false);
+                toggleHumidityButton.setChecked(false);
                 turnOffFan();
-
-
+                turnOffHumidity();
             }
         });
 
@@ -232,9 +237,10 @@ public class UserActivity extends Activity {
 
         //specified
         private int airQUpperThresh = 300;
-        private int airQLowerThresh = 280;
-        private int HumiUpperThresh;
-        private int HumiLowerThresh;
+        private int airQLowerThresh = airQUpperThresh - 20;
+        private int humiSetLevel = 30;
+
+
 
         public ReadInput() {
             t = new Thread(this, "Input Thread");
@@ -273,19 +279,6 @@ public class UserActivity extends Activity {
                                 public void run() {
                                     mTxtReceive.append(strInput);
 
-
-                                     /*   
-                                     * TODO : Sprint 2 Features PlaceHolders                  March 15
-                                     */ 
-                                    
-                                     /*   
-                                     * TODO : Sprint 3 Features PlaceHolders                  March 29
-                                     */ 
-                                    
-                                    /*   
-                                     * TODO : Addition features Placeholders                  
-                                     */
-
                                     //TODO : INCLUDE THE DECIMAL POINTS
                                     String firstInt = strInput.replaceAll(".*?(\\d+).*", "$1");
 
@@ -314,35 +307,46 @@ public class UserActivity extends Activity {
                                     Log.d(TAG, "AQ = " + String.valueOf(airQ));
                                     Log.d(TAG, "H = " + String.valueOf(humi));
                                     Log.d(TAG, "T = " + String.valueOf(temp));
-                                    Log.d(TAG,  String.valueOf(strInput.trim().charAt(0)));
+                                    Log.d(TAG, "__INPUT__" + firstInt.trim());
 
+                                //Auto Fan Logic
                                     if( airQ >= airQUpperThresh && UserSelectFanType == true && autoFlip == false)
-                                      {
-                                        //if(imax < i)
-                                        //{ imax = i;}
-                                            if(counter >1)
-                                            {
-                                                //if(imax < i)
-                                                //{imax = i;}
-                                                //notificationText.setText("Air threshold is reached! " + imax);
-                                                sendAlertOption();
-
-                                                running =true;
-                                                counter--;
-                                            }
+                                    {
+                                        if(counter >1)
+                                        {
+                                            sendAlertOption();
+                                            running =true;
+                                            counter--;
+                                        }
                                         AutoturnOnFan();
-                                          if(imax < airQ)
-                                          {imax = airQ;}
-                                          notificationText.setText("Air threshold is reached! " + imax);
-                                          autoFlip = true;
-                                       }
+                                        if(imax < airQ)
+                                        {imax = airQ;}
+                                        notificationText.setText("Air threshold is reached! " + imax);
+                                        autoFlip = true;
+                                    }
 
-                                    if(airQ < airQLowerThresh && UserSelectFanType == true && autoFlip == true)
-                                       {
+                                    if( airQ < airQLowerThresh && UserSelectFanType == true && autoFlip == true)
+                                    {
                                         AutoturnOffFan();
+                                        notificationText.setText(" ");
                                         running = false;
                                         autoFlip = false;
-                                       }
+                                    }
+
+                                //Auto Humidity Logic
+                                    if( humi > humiSetLevel && UserSelectFanType == true && humiFlip == false)
+                                    {
+                                        //AutoturnOffHumidifier();
+                                        notificationText.setText("Above set Humidity Level " + String.valueOf(humiSetLevel));
+                                        humiFlip = true;
+                                    }
+
+                                    if( humi <= humiSetLevel && UserSelectFanType == true && humiFlip == true)
+                                    {
+                                        //AutoturnOnHumidifier();
+                                        notificationText.setText("Below set Humidity " + String.valueOf(humiSetLevel));
+                                        humiFlip = false;
+                                    }
 
                                     int txtLength = mTxtReceive.getEditableText().length();
                                     if(txtLength > mMaxChars){
@@ -362,7 +366,7 @@ public class UserActivity extends Activity {
                         }
 
                     }
-                    Thread.sleep(1000);
+                    Thread.sleep(1500);
                 }
             } catch (IOException e) {
 // TODO Auto-generated catch block
@@ -436,6 +440,42 @@ private void AutoturnOnFan()
                 mBTSocket.getOutputStream().write("AO".toString().getBytes());
                 FanButton.setChecked(true);
                 Log.d(TAG, "AutoturnOnFan: AO");
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
+
+    private void AutoturnOffHumidifier()
+    {
+        if (mBTSocket!=null)
+        {
+            try
+            {
+                mBTSocket.getOutputStream().write("AHF".toString().getBytes());
+                Log.d(TAG, "AutoturnOffHumidfier: AHF");
+
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+        FanButton.setChecked(false);
+    }
+
+
+    private void AutoturnOnHumidifier()
+    {
+        if (mBTSocket!=null)
+        {
+            try
+            {
+                mBTSocket.getOutputStream().write("AHO".toString().getBytes());
+                FanButton.setChecked(true);
+                Log.d(TAG, "AutoturnOnHumidifier: AHO");
             }
             catch (IOException e)
             {
