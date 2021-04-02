@@ -36,9 +36,11 @@ void loop()
   float temp = dht.readTemperature(); //records the temperature
   Serial.print("\n Air Quality in PPM is: ");
   Serial.print(data);          // send this value to app
-  Serial.print("\n Air Humidity in %: ");
+  delay(1000);
+  Serial.print("\n Humidity in %: ");
   Serial.print(humi);
-  Serial.print("\n Air Temperature in Celcius  : ");
+  delay(1000);
+  Serial.print("\n Temperature in Celcius  : ");
   Serial.print(temp);
   delay(1000);                //Every 2 seconds it will send to java and new reading
     

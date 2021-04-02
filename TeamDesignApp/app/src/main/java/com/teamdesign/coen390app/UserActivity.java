@@ -50,17 +50,11 @@ public class UserActivity extends Activity {
     protected boolean UserSelectFanManual =true;
     protected boolean autoFlip = false;
 
-    private ToggleButton toggleAlertButton;
-    private ToggleButton toggleFanButton;
-    private ToggleButton FanButton;
-    private ToggleButton toggleHumidityButton;
-
     // Notification manager initialization
     private NotificationManagerCompat notificationManager;
 
     // maximum threshold value
     private int imax = 0;
-
 
     // Integer value used for time system
     private int seconds = 0;
@@ -94,6 +88,10 @@ public class UserActivity extends Activity {
     private ScrollView scrollView;
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
+    private ToggleButton toggleAlertButton;
+    private ToggleButton toggleFanButton;
+    private ToggleButton FanButton;
+    private ToggleButton toggleHumidityButton;
 
 
     @Override
@@ -227,6 +225,17 @@ public class UserActivity extends Activity {
         private boolean bStop = false;
         private Thread t;
 
+        //Read variables
+        private int airQ;
+        private double humi;
+        private double temp;
+
+        //specified
+        private int airQUpperThresh = 300;
+        private int airQLowerThresh = 280;
+        private int HumiUpperThresh;
+        private int HumiLowerThresh;
+
         public ReadInput() {
             t = new Thread(this, "Input Thread");
             t.start();
@@ -275,20 +284,39 @@ public class UserActivity extends Activity {
                                     
                                     /*   
                                      * TODO : Addition features Placeholders                  
-                                     */ 
-                                    
-                                    String firstInt = strInput.replaceFirst(".*?(\\d+).*", "$1");
-                                    int i;
-                                    try {
-                                        i = Integer.parseInt(firstInt.trim());
-                                    }
-                                    catch (NumberFormatException e)
-                                    {
-                                        i = 361;
-                                    }
-                                    Log.d(TAG, String.valueOf(i));
+                                     */
 
-                                    if( i>=390 && UserSelectFanType == true && autoFlip == false)
+                                    //TODO : INCLUDE THE DECIMAL POINTS
+                                    String firstInt = strInput.replaceAll(".*?(\\d+).*", "$1");
+
+                                    if((strInput.trim().charAt(0)) == 'A') {
+                                        try {
+                                            airQ = Integer.parseInt(firstInt.trim());
+                                        } catch (NumberFormatException e) {
+                                            airQ = airQLowerThresh + 1;
+                                        }
+                                    }
+                                    if((strInput.trim().charAt(0)) == 'H') {
+                                        try {
+                                            humi = Float.parseFloat(firstInt.trim());
+                                        } catch (NumberFormatException e) {
+                                            humi = 50.0;
+                                        }
+                                    }
+                                    if((strInput.trim().charAt(0)) == 'T') {
+                                        try {
+                                            temp = Float.parseFloat(firstInt.trim());
+                                        } catch (NumberFormatException e) {
+                                            temp = 22.0;
+                                        }
+                                    }
+
+                                    Log.d(TAG, "AQ = " + String.valueOf(airQ));
+                                    Log.d(TAG, "H = " + String.valueOf(humi));
+                                    Log.d(TAG, "T = " + String.valueOf(temp));
+                                    Log.d(TAG,  String.valueOf(strInput.trim().charAt(0)));
+
+                                    if( airQ >= airQUpperThresh && UserSelectFanType == true && autoFlip == false)
                                       {
                                         //if(imax < i)
                                         //{ imax = i;}
@@ -303,13 +331,13 @@ public class UserActivity extends Activity {
                                                 counter--;
                                             }
                                         AutoturnOnFan();
-                                          if(imax < i)
-                                          {imax = i;}
+                                          if(imax < airQ)
+                                          {imax = airQ;}
                                           notificationText.setText("Air threshold is reached! " + imax);
                                           autoFlip = true;
                                        }
 
-                                    if(i<360 && UserSelectFanType == true && autoFlip == true)
+                                    if(airQ < airQLowerThresh && UserSelectFanType == true && autoFlip == true)
                                        {
                                         AutoturnOffFan();
                                         running = false;
@@ -715,4 +743,5 @@ private void AutoturnOnFan()
             }
         });
     }
+
 }
