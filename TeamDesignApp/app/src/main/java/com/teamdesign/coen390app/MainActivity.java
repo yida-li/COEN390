@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Testing which will be deprecated as soon as ricky as us about it
     private static final String TAG = "BlueTest5-MainActivity";
+
     
 
     @Override
@@ -86,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             initList(new ArrayList<BluetoothDevice>());
         }
+
+        autoConnect();
+
         search.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -102,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         connect.setOnClickListener(new View.OnClickListener() {
 
@@ -157,7 +162,47 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+
     }
+
+    void autoConnect()
+    {
+        mBTAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (mBTAdapter == null) {
+            Toast.makeText(getApplicationContext(), "Bluetooth not found", Toast.LENGTH_SHORT).show();
+        } else if (!mBTAdapter.isEnabled()) {
+            Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBT, BT_ENABLE_REQUEST);
+        } else {
+            new SearchDevices().execute();
+        }
+
+        Set<BluetoothDevice> pairedDevices = mBTAdapter.getBondedDevices();
+        List<BluetoothDevice> listDevices = new ArrayList<BluetoothDevice>();
+        for (BluetoothDevice device : pairedDevices) {
+            listDevices.add(device);
+        }
+        for(int i = 0 ; i < listDevices.size(); i ++)
+        {
+            Log.d(TAG, String.valueOf(listDevices.get(8).getName()));
+            if(listDevices.get(i).getName() == "HC-05");
+            {
+                Log.d(TAG, String.valueOf(listDevices.get(8)));
+
+                BluetoothDevice device = listDevices.get(8);
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                intent.putExtra(DEVICE_EXTRA, device);
+                intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
+                intent.putExtra(BUFFER_SIZE, mBufferSize);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                //break;
+            }
+        }
+    }
+
 
     protected void onPause() {
 // TODO Auto-generated method stub

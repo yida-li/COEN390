@@ -40,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="400dp">
     </ListView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,10 +50,11 @@
 
         <Button
             android:id="@+id/connect2"
-            android:layout_width="133dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:text="super Interface" />
+
         <Button
             android:id="@+id/connect3"
             android:layout_width="wrap_content"
