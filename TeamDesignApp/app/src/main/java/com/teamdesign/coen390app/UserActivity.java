@@ -85,8 +85,8 @@ public class UserActivity extends Activity {
     // Widgets for Main screen layout
     private TextView mTxtReceive;
     private Button mBtnClearInput;
-    private Button logButton;
-    private Button detailButton;
+    //private Button logButton;
+    //private Button detailButton;
     private ScrollView scrollView;
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
@@ -125,8 +125,7 @@ public class UserActivity extends Activity {
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
 
-        detailButton=(Button)findViewById(R.id.detailButton);
-        logButton=(Button)findViewById(R.id.logButton);
+
         toggleAlertButton=(ToggleButton)findViewById(R.id.toggleAlertButton);
         toggleFanButton=(ToggleButton)findViewById(R.id.toggleFanButton);
         FanButton=(ToggleButton)findViewById(R.id.toggleButtonMan);
@@ -186,28 +185,6 @@ public class UserActivity extends Activity {
             }
         });
 
-        logButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent( getApplicationContext(), LogActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-
-                startActivity(intent);
-            }
-        });
-
-        detailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent( getApplicationContext(), DetailActivity.class);
-
-
-                startActivity(intent);
-            }
-        });
 
 
         notificationManager = NotificationManagerCompat.from(this);

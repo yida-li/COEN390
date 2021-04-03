@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private Button search;
     private Button connect;
     private Button connect1;
+    private Button connect2;
+    private Button connect3;
     private ListView listView;
     private BluetoothAdapter mBTAdapter;
     private static final int BT_ENABLE_REQUEST = 10; // This is the code we use for BT Enable
@@ -61,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         search = (Button) findViewById(R.id.search);
         connect = (Button) findViewById(R.id.connect);
         connect1 = (Button) findViewById(R.id.connect1);
+        connect2 = (Button) findViewById(R.id.connect2);
+        connect3 = (Button) findViewById(R.id.connect3);
         listView = (ListView) findViewById(R.id.listview);
 
 
@@ -125,7 +129,32 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        connect2.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View arg0) {
+                BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
+                Intent intent = new Intent(getApplicationContext(), graphPage.class);
+                intent.putExtra(DEVICE_EXTRA, device);
+                intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
+                intent.putExtra(BUFFER_SIZE, mBufferSize);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+        connect3.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
+                Intent intent = new Intent(getApplicationContext(), controlPage.class);
+                intent.putExtra(DEVICE_EXTRA, device);
+                intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
+                intent.putExtra(BUFFER_SIZE, mBufferSize);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
 
 
     }

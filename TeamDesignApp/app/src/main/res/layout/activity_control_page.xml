@@ -4,13 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogActivity">
+    tools:context=".controlPage">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="130dp"
-        android:layout_height="46dp"
-        android:text="The hard part"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="317dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

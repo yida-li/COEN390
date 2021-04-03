@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class LogActivity extends AppCompatActivity {
+public class controlPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityHelper.initialize(this);
+        setContentView(R.layout.activity_control_page);
     }
 }

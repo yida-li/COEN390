@@ -15,26 +15,12 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/logButton"
-            android:layout_width="110dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:text="Log Page" />
-
-        <Button
             android:id="@+id/btnClearInput"
             android:layout_width="150dp"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:layout_weight="0"
             android:text="Clear Input" />
-
-        <Button
-            android:id="@+id/detailButton"
-            android:layout_width="110dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:text="Details" />
 
 
     </LinearLayout>

@@ -48,7 +48,9 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_3_ID;
 public class UserSimpleActivity extends Activity {
 
     public int cnt = 0;
+    DatabaseHelper mDatabaseHelper;
 
+    private Button historyButton;
     // intially default mode
     protected boolean UserSelectAlertType=true;
     protected boolean UserSelectFanType= true;
@@ -119,12 +121,25 @@ public class UserSimpleActivity extends Activity {
         chkScroll = (CheckBox) findViewById(R.id.chkScroll);
         chkReceiveText = (CheckBox) findViewById(R.id.chkReceiveText);
         scrollView = (ScrollView) findViewById(R.id.viewScroll);
-
+        mDatabaseHelper = new DatabaseHelper(this);
 
         // mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
         notificationManager = NotificationManagerCompat.from(this);
+
+        historyButton =(Button)findViewById(R.id.historyButton);
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent( getApplicationContext(), ListDataActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+                startActivity(intent);
+            }
+        });
 
     } // end of Oncreate function
 
@@ -255,6 +270,11 @@ public class UserSimpleActivity extends Activity {
                                                 "         Humidity in % "+ humi +"\n"+
                                                 "         Temperature in C "+ temp +"\n"+
                                                 "         Fan Duration: "+seconds+ " Seconds\n\n" );
+                                        AddData("         "+ td+ " " +currentTime+"\n"+
+                                                "         Smoke in PPM "+imax+"\n"+
+                                                "         Humidity in % "+ humi +"\n"+
+                                                "         Temperature in C "+ temp +"\n"+
+                                                "         Fan Duration: "+seconds+ " Seconds\n\n" );
                                         seconds = 0;
                                         imax = 0;
                                         fanThresholdFlag=true;
@@ -316,6 +336,19 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     /*
     Sends Alert to user even if application is in background
      */
+    private void toastMessage(String message){
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void AddData(String newEntry) {
+        boolean insertData = mDatabaseHelper.addData(newEntry);
+
+        if (insertData) {
+            toastMessage("Data Registered");
+        } else {
+            toastMessage("Something went wrong");
+        }
+    }
 
 
     public void sendAlertOption(){
