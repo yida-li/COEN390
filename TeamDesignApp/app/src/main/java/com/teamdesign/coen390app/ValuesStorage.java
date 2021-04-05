@@ -162,5 +162,32 @@ public class ValuesStorage extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    public void recycleStorage(){
+         SQLiteDatabase db = this.getWritableDatabase();
+         String query = "DELETE FROM " + TABLE_NAME1 + " WHERE "
+                + COL1 + " = '" + id + "'" +
+                " AND " + COL2 + " = '" + name + "'";
+    }
+    public void recycle(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String ALTER_TBL ="delete from " + TABLE_NAME1 +
+                " where "+COL1 +" in (select "+ COL1 +" from "+ TABLE_NAME1+" order by _ID LIMIT 3);";
+
+        db.delete(TABLE_NAME1, "ID < "+ 2, null);  // deleting the first values <2   or first 19 values <20
+
+      //  db.execSQL(ALTER_TBL);
+    }
+/*
+String ALTER_TBL ="delete from " + MYDATABASE_TABLE +
+     " where "+KEY_ID+" in (select "+ KEY_ID +" from "+ MYDATABASE_TABLE+" order by _id LIMIT 3);";
+
+ */
+    /*
+String ALTER_TBL ="delete from " + MYDATABASE_TABLE +
+     " where "+KEY_ID+" in (select "+ KEY_ID +" from "+ MYDATABASE_TABLE+" order by _id LIMIT 3);";
+*/
+
+
+
 }
 
