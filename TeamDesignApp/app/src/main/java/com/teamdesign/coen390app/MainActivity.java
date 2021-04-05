@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
         connect3 = (Button) findViewById(R.id.connect3);
         listView = (ListView) findViewById(R.id.listview);
 
-
-
         if (savedInstanceState != null) {
             ArrayList<BluetoothDevice> list = savedInstanceState.getParcelableArrayList(DEVICE_LIST);
             if (list != null) {
@@ -88,7 +86,10 @@ public class MainActivity extends AppCompatActivity {
             initList(new ArrayList<BluetoothDevice>());
         }
 
+        //Skip Device setup;
         autoConnect();
+
+
 
         search.setOnClickListener(new View.OnClickListener() {
 
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LandingPageActivity.class);
                 intent.putExtra(DEVICE_EXTRA, device);
                 intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
                 intent.putExtra(BUFFER_SIZE, mBufferSize);
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-                Intent intent = new Intent(getApplicationContext(), graphPage.class);
+                Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
                 intent.putExtra(DEVICE_EXTRA, device);
                 intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
                 intent.putExtra(BUFFER_SIZE, mBufferSize);
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-                Intent intent = new Intent(getApplicationContext(), controlPage.class);
+                Intent intent = new Intent(getApplicationContext(), ControlActivity.class);
                 intent.putExtra(DEVICE_EXTRA, device);
                 intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
                 intent.putExtra(BUFFER_SIZE, mBufferSize);
@@ -168,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
     void autoConnect()
     {
+        String deviceName;
         mBTAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (mBTAdapter == null) {
@@ -186,19 +188,17 @@ public class MainActivity extends AppCompatActivity {
         }
         for(int i = 0 ; i < listDevices.size(); i ++)
         {
-            Log.d(TAG, String.valueOf(listDevices.get(8).getName()));
-            if(listDevices.get(i).getName() == "HC-05");
+            deviceName = (listDevices.get(i).getName());
+            if(deviceName.equals("HC-05"))
             {
-                Log.d(TAG, String.valueOf(listDevices.get(8)));
-
-                BluetoothDevice device = listDevices.get(8);
-                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                BluetoothDevice device = listDevices.get(i);
+                Intent intent = new Intent(getApplicationContext(), LandingPageActivity.class);
                 intent.putExtra(DEVICE_EXTRA, device);
                 intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
                 intent.putExtra(BUFFER_SIZE, mBufferSize);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                //break;
+                break;
             }
         }
     }
@@ -295,12 +295,29 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<BluetoothDevice> listDevices) {
             super.onPostExecute(listDevices);
-            if (listDevices.size() > 0) {
-                MyAdapter adapter = (MyAdapter) listView.getAdapter();
-                adapter.replaceItems(listDevices);
-            } else {
+            List<BluetoothDevice> tempList  =  new ArrayList<>();
+            for(int i = 0; i < listDevices.size(); i++)
+            {
+                if((listDevices.get(i).getName()).equals("HC-05"))
+                {
+                    tempList.add(listDevices.get(i));
+                    MyAdapter adapter = (MyAdapter) listView.getAdapter();
+                    adapter.replaceItems(tempList);
+                    break;
+                }
+
+            }
+            if(tempList.size() == 0)
+            {
                 msg("No paired devices found, please pair your serial BT device and try again");
             }
+//            if (listDevices.size() > 0) {
+//                MyAdapter adapter = (MyAdapter) listView.getAdapter();
+//                adapter.replaceItems(listDevices);
+//            }
+//            else {
+//                msg("No paired devices found, please pair your serial BT device and try again");
+//            }
         }
 
     }

@@ -1,9 +1,6 @@
 package com.teamdesign.coen390app;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.time.LocalTime;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,20 +20,11 @@ import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Vibrator;
-import android.content.Context;
-import android.os.Build;
-import android.os.VibrationEffect;
-import android.widget.ToggleButton;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -117,7 +105,7 @@ public class UserSimpleActivity extends Activity {
         mDeviceUUID = UUID.fromString(b.getString(MainActivity.DEVICE_UUID));
         mMaxChars = b.getInt(MainActivity.BUFFER_SIZE);
         notificationText =(TextView) findViewById(R.id.notificationText);
-        mTxtReceive = (TextView) findViewById(R.id.txtReceive);
+        mTxtReceive = (TextView) findViewById(R.id.txtReceiveGraph);
         chkScroll = (CheckBox) findViewById(R.id.chkScroll);
         chkReceiveText = (CheckBox) findViewById(R.id.chkReceiveText);
         scrollView = (ScrollView) findViewById(R.id.viewScroll);
@@ -262,15 +250,17 @@ public class UserSimpleActivity extends Activity {
                                         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
 
                                         Date date = new Date();
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd / 03 / yyyy");
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd / 04 / yyyy");
                                         String td = dateFormat.format(date);
                                         running = false;
-                                        mTxtReceive.append("         "+ td+ " " +currentTime+"\n"+
+                                        mTxtReceive.append(
+                                                "         "+ td+ " " +currentTime+"\n"+
                                                 "         Smoke in PPM "+imax+"\n"+
                                                 "         Humidity in % "+ humi +"\n"+
                                                 "         Temperature in C "+ temp +"\n"+
                                                 "         Fan Duration: "+seconds+ " Seconds\n\n" );
-                                        AddData("         "+ td+ " " +currentTime+"\n"+
+                                        AddData(
+                                                "         "+ td+ " " +currentTime+"\n"+
                                                 "         Smoke in PPM "+imax+"\n"+
                                                 "         Humidity in % "+ humi +"\n"+
                                                 "         Temperature in C "+ temp +"\n"+

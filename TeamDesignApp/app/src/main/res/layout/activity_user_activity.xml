@@ -30,21 +30,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/chkScroll"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:checked="true"
-            android:text="Scroll" />
-
-        <CheckBox
-            android:id="@+id/chkReceiveText"
-            android:layout_width="fill_parent"
-            android:layout_height="37dp"
-            android:checked="true"
-            android:text="Read" />
-
         <ScrollView
             android:id="@+id/viewScroll"
             android:layout_width="match_parent"
@@ -52,7 +37,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/txtReceive"
+                android:id="@+id/txtReceiveGraph"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
@@ -62,6 +47,21 @@
                 android:scrollbars="vertical"
                 android:typeface="monospace" />
         </ScrollView>
+
+        <CheckBox
+            android:id="@+id/chkReceiveText"
+            android:layout_width="fill_parent"
+            android:layout_height="37dp"
+            android:checked="true"
+            android:text="Read" />
+
+        <CheckBox
+            android:id="@+id/chkScroll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:checked="true"
+            android:text="Scroll" />
 
         <EditText
             android:id="@+id/notificationText"

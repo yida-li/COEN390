@@ -12,7 +12,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
-import android.icu.text.UnicodeSetSpanner;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,16 +21,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Vibrator;
-import android.content.Context;
-import android.os.Build;
-import android.os.VibrationEffect;
 import android.widget.ToggleButton;
 
 import androidx.core.app.NotificationCompat;
@@ -76,7 +68,7 @@ public class UserActivity extends Activity {
     private boolean mIsBluetoothConnected = false;
     private BluetoothDevice mDevice;
     private ProgressDialog progressDialog;
-    private static final String TAG = "Main Activity";
+    private static final String TAG = "User Activity";
     private int mMaxChars = 50000;
     private UUID mDeviceUUID;
     private BluetoothSocket mBTSocket;
@@ -117,7 +109,7 @@ public class UserActivity extends Activity {
         mDeviceUUID = UUID.fromString(b.getString(MainActivity.DEVICE_UUID));
         mMaxChars = b.getInt(MainActivity.BUFFER_SIZE);
         notificationText =(TextView) findViewById(R.id.notificationText);
-        mTxtReceive = (TextView) findViewById(R.id.txtReceive);
+        mTxtReceive = (TextView) findViewById(R.id.txtReceiveGraph);
         chkScroll = (CheckBox) findViewById(R.id.chkScroll);
         chkReceiveText = (CheckBox) findViewById(R.id.chkReceiveText);
         scrollView = (ScrollView) findViewById(R.id.viewScroll);
@@ -198,7 +190,7 @@ public class UserActivity extends Activity {
             }
         });
     } // end of Oncreate function
-    
+
     /*
     Thread based child-0process datapath to constantly uplaod stream of
      */
@@ -213,7 +205,7 @@ public class UserActivity extends Activity {
         private double temp;
 
         //specified
-        private int airQUpperThresh = 300;
+        private int airQUpperThresh = 350;
         private int airQLowerThresh = airQUpperThresh - 20;
         private int humiSetLevel = 30;
 
@@ -369,7 +361,7 @@ public class UserActivity extends Activity {
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
 } else {
-    //deprecated in API 26 
+    //deprecated in API 26
     v.vibrate(500);
 }
     }

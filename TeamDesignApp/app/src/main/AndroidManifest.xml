@@ -14,8 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Coen390App">
-        <activity android:name=".controlPage"></activity>
-        <activity android:name=".graphPage" />
+        <activity android:name=".ControlActivity"></activity>
+        <activity android:name=".GraphActivity" />
+        <activity android:name=".LandingPageActivity" />
+        <activity android:name=".controlPage" />
         <activity android:name=".NotificationActivity" />
         <activity android:name=".UserActivity" />
         <activity android:name=".UserSimpleActivity" />
