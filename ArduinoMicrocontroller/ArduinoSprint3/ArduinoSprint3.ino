@@ -14,6 +14,15 @@ bool fanFlip = true;
 bool autoFlip = true;
 bool atomizerFlip = true;
 bool autoAtomFlip = true;
+bool ThreshFlipL = true;
+bool ThreshFlipN = true;
+bool ThreshFlipH = true;
+bool autoMode = true;
+
+int LowThresh = 400;
+int HighThresh = 500;
+
+bool autoFlip2 = true; //This is for automatically enabling the fan when app is off
 
 void setup(){ 
   
@@ -62,6 +71,38 @@ void loop()
     delay(1);
    }
 
+if(string == "SL" && ThreshFlipL == true)
+{
+  LowThresh = 500;
+  HighThresh = 600;
+  ThreshFlipL = false;
+  ThreshFlipN = true;
+  ThreshFlipH = true;
+  Serial.println("\n\n  Sensitivity Changed to LOW");
+
+}
+if(string == "SN" && ThreshFlipN == true)
+{
+  LowThresh = 400;
+  HighThresh = 500;
+  ThreshFlipL = true;
+  ThreshFlipN = false;
+  ThreshFlipH = true;
+  Serial.println("\n\n  Sensitivity Changed to NORMAL");
+
+}
+if(string == "SH" && ThreshFlipH == true)
+{
+  LowThresh = 320;
+  HighThresh = 350;
+  ThreshFlipL = true;
+  ThreshFlipN = true;
+  ThreshFlipH = false;
+  Serial.println("\n\n  Sensitivity Changed to HIGHLY");
+
+}
+
+  
 //FAN CONTROLS 
   if(string == "TO" && fanFlip == true)     //Java is sending the message TO to turn on the fan
   {
@@ -113,26 +154,54 @@ void loop()
   }
 
   
-//AUTOFAN CONTROLS
-  if(string =="AO" && autoFlip == true)
+////AUTOFAN CONTROLS
+//  if(string =="AO" && autoFlip == true)
+//  {
+//    autoOn();                   // see comment above  
+//    //Serial.println(string); //debug
+//    autoFlip = false;
+//    delay(100);
+//  }
+//  
+//  if(string =="AF" && autoFlip == false)
+//  {
+//    autoOff();                   // see comment above  
+//    //Serial.println(string); //debug
+//    delay(100);
+//    autoFlip = true;
+//  }
+
+//---AUTO SETTINGS---
+  if (string == "AMO")
   {
-    autoOn();                   // see comment above  
-    //Serial.println(string); //debug
-    autoFlip = false;
-    delay(100);
-    
+    autoMode = true;     
+  }
+  if (string = "AMF")
+  {
+    autoMode = false;
   }
   
-  if(string =="AF" && autoFlip == false)
-  {
-    autoOff();                   // see comment above  
-    //Serial.println(string); //debug
-    delay(100);
-    autoFlip = true;
-  }          
+  if(autoMode == true && data >= HighThresh && autoFlip2 == true) // AM is sent by java when toggling manual/auto button
+    {
+      IndautoOn();                   // see comment above  
+      //Serial.println(string); //debug
+      autoFlip2 = false;
+      delay(100);
+    }
+    
+    if(autoMode == true && data <= LowThresh && autoFlip2 == false )
+    {
+      IndautoOff();                   // see comment above  
+      //Serial.println(string); //debug
+      delay(100);
+      autoFlip2 = true;
+    }          
+    
 }
 
 
+//---OI FUNCTIONS--- 
+ 
 void fanOn() 
 {
   digitalWrite(13, HIGH);   //Using pin 13 to power the relay circuit
@@ -146,7 +215,6 @@ void fanOff()
   Serial.println("\n\n   You have turned ON the fan");
   delay(10);
 }
-
 
 void atomOn()
 {
@@ -187,5 +255,19 @@ void autoAtomOff()
 {
   digitalWrite(12,LOW);
   Serial.println("\n\n  Humidifier turn OFF Automatically");
+  delay(10);
+}
+
+void IndautoOn() 
+{
+  digitalWrite(13, LOW);   
+  Serial.println("\n\n   Fan turned ON Automatically"); 
+  delay(10);
+}
+
+void IndautoOff()  
+{
+  digitalWrite(13, HIGH);
+  Serial.println("\n\n   Fan turned OFF Automatically ");
   delay(10);
 }

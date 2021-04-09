@@ -128,7 +128,7 @@ public class GraphActivity extends AppCompatActivity {
         //mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
         airQGraphView = findViewById(R.id.airQGraphView);
         airQSeries = new LineGraphSeries<DataPoint>();
-        airQGraphView.addSeries(airQSeries)
+        airQGraphView.addSeries(airQSeries);
         Viewport viewport1 = airQGraphView.getViewport();
         viewport1.setYAxisBoundsManual(true);
         viewport1.setMinY(200);

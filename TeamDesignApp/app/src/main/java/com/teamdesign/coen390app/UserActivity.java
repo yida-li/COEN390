@@ -31,9 +31,8 @@ import androidx.core.app.NotificationManagerCompat;
 
 import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_1_ID;
 import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
-import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_3_ID;
 
-public class UserActivity extends Activity {
+                                            public class UserActivity extends Activity {
 
 
     // intially default mode
@@ -77,8 +76,6 @@ public class UserActivity extends Activity {
     // Widgets for Main screen layout
     private TextView mTxtReceive;
     private Button mBtnClearInput;
-    //private Button logButton;
-    //private Button detailButton;
     private ScrollView scrollView;
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
@@ -87,11 +84,18 @@ public class UserActivity extends Activity {
     private ToggleButton FanButton;
     private ToggleButton toggleHumidityButton;
 
+    // THRESHOLDS
+    private Button SensLow;
+    private Button SensNormal;
+    private Button SensHigh;
+    private int HighThresh = 350;
+    private int LowThresh = 300;
+    private int count = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // setContentView basically connects this instance to the designated xml file
         setContentView(R.layout.activity_user_activity);
 
@@ -123,6 +127,46 @@ public class UserActivity extends Activity {
         FanButton=(ToggleButton)findViewById(R.id.toggleButtonMan);
         toggleHumidityButton=(ToggleButton)findViewById((R.id.toggleButtonHumidity));
 
+
+        //thresh hold tester
+        SensLow=findViewById(R.id.SensLow);
+        SensNormal=findViewById(R.id.SensNormal);
+        SensHigh=findViewById(R.id.SensHigh);
+
+        SensLow.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                HighThresh = 600;
+                LowThresh = 500;
+                Toast.makeText(UserActivity.this, "Changed to Low Sensitivity (600 PPM)", Toast.LENGTH_SHORT).show();
+                CallSensLow();
+            }
+        });
+
+        SensNormal.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                HighThresh = 500;
+                LowThresh = 400;
+                Toast.makeText(UserActivity.this, "Changed to Normal Sensitivity (500 PPM)", Toast.LENGTH_SHORT).show();
+                CallSensNormal();
+            }
+        });
+
+        SensHigh.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                HighThresh = 350;
+                LowThresh = 250;
+                Toast.makeText(UserActivity.this, "Changed to High Sensitivity (350 PPM)", Toast.LENGTH_SHORT).show();
+                CallSensHigh();
+            }
+        });
+
+
         toggleAlertButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
 
@@ -140,7 +184,7 @@ public class UserActivity extends Activity {
                 UserSelectFanType=false;
                 FanButton.setEnabled(true);
                 toggleHumidityButton.setEnabled((true));
-
+                AutoModeOff();
             } else {
                 UserSelectFanType=true;
                 FanButton.setEnabled(false);
@@ -149,6 +193,8 @@ public class UserActivity extends Activity {
                 toggleHumidityButton.setChecked(false);
                 turnOffFan();
                 turnOffHumidity();
+                AutoModeOn();
+                //TODO automode only can turned when double tapped
             }
         });
 
@@ -204,12 +250,7 @@ public class UserActivity extends Activity {
         private double humi;
         private double temp;
 
-        //specified
-        private int airQUpperThresh = 350;
-        private int airQLowerThresh = airQUpperThresh - 20;
         private int humiSetLevel = 30;
-
-
 
         public ReadInput() {
             t = new Thread(this, "Input Thread");
@@ -255,7 +296,7 @@ public class UserActivity extends Activity {
                                         try {
                                             airQ = Integer.parseInt(firstInt.trim());
                                         } catch (NumberFormatException e) {
-                                            airQ = airQLowerThresh + 1;
+                                            airQ = LowThresh + 1;
                                         }
                                     }
                                     if((strInput.trim().charAt(0)) == 'H') {
@@ -279,7 +320,7 @@ public class UserActivity extends Activity {
                                     Log.d(TAG, "__INPUT__" + firstInt.trim());
 
                                 //Auto Fan Logic
-                                    if( airQ >= airQUpperThresh && UserSelectFanType == true && autoFlip == false)
+                                    if( airQ >= HighThresh && UserSelectFanType == true && autoFlip == false)
                                     {
                                         if(counter >1)
                                         {
@@ -287,16 +328,16 @@ public class UserActivity extends Activity {
                                             running =true;
                                             counter--;
                                         }
-                                        AutoturnOnFan();
+                                        //AutoturnOnFan();
                                         if(imax < airQ)
                                         {imax = airQ;}
                                         notificationText.setText("Air threshold is reached! " + imax);
                                         autoFlip = true;
                                     }
 
-                                    if( airQ < airQLowerThresh && UserSelectFanType == true && autoFlip == true)
+                                    if( airQ < LowThresh && UserSelectFanType == true && autoFlip == true)
                                     {
-                                        AutoturnOffFan();
+                                        //AutoturnOffFan();
                                         notificationText.setText(" ");
                                         running = false;
                                         autoFlip = false;
@@ -371,6 +412,59 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     /*
     Sends Alert to user even if application is in background
      */
+//---Threshold setting functions---
+    public void CallSensLow(){
+        if (mBTSocket != null) {
+            try {
+                mBTSocket.getOutputStream().write("SL".toString().getBytes());
+            } catch (IOException e) {
+                msg("Error");
+            }
+            Log.d(TAG, " SL ");
+        }
+    }
+    public void CallSensNormal(){
+        if (mBTSocket != null) {
+            try {
+                mBTSocket.getOutputStream().write("SN".toString().getBytes());
+            } catch (IOException e) {
+                msg("Error");
+            }
+            Log.d(TAG, " SN ");
+        }
+    }
+    public void CallSensHigh(){
+        if (mBTSocket != null) {
+            try {
+                mBTSocket.getOutputStream().write("SH".toString().getBytes());
+            } catch (IOException e) {
+                msg("Error");
+            }
+            Log.d(TAG, " SH ");
+        }
+    }
+
+    private void AutoModeOn() {
+        if (mBTSocket != null) {
+            try {
+                mBTSocket.getOutputStream().write("AMO".toString().getBytes());
+            } catch (IOException e) {
+                msg("Error");
+            }
+            Log.d(TAG, " AMO ");
+        }
+    }
+
+    private void AutoModeOff() {
+        if (mBTSocket != null) {
+            try {
+                mBTSocket.getOutputStream().write("AMF".toString().getBytes());
+            } catch (IOException e) {
+                msg("Error");
+            }
+            Log.d(TAG, " AMF ");
+        }
+    }
 
     public void sendAlertOption(){
         if(!UserSelectAlertType){
