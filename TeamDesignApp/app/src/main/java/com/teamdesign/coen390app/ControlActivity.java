@@ -174,7 +174,7 @@ public class ControlActivity extends AppCompatActivity {
                             {
                                 @Override
                                 public void run() {
-                                    airQRead.setText(String.valueOf(airQ));
+                                    //airQRead.setText(String.valueOf(airQ));
                                 }
                             });
                         }
@@ -188,7 +188,7 @@ public class ControlActivity extends AppCompatActivity {
                             {
                                 @Override
                                 public void run() {
-                                    humiRead.setText(String.valueOf(humi));
+                                    //humiRead.setText(String.valueOf(humi));
                                 }
                             });
                         }
@@ -202,7 +202,7 @@ public class ControlActivity extends AppCompatActivity {
                             {
                                 @Override
                                 public void run() {
-                                    tempRead.setText(String.valueOf(temp));
+                                    //tempRead.setText(String.valueOf(temp));
                                 }
                             });
                         }

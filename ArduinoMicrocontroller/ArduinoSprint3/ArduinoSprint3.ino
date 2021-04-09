@@ -44,7 +44,7 @@ void loop()
   float humi = dht.readHumidity(); // records the humidity 
   float temp = dht.readTemperature(); //records the temperature
   Serial.print("\n Air Quality: ");
-  Serial.print(data);          // send this value to app
+  Serial.print(data-300);          // send this value to app
   delay(1500);
   Serial.print("\n Humidity: ");
   Serial.print(humi);
@@ -189,14 +189,14 @@ if(string == "SH" && ThreshFlipH == true)
       delay(100);
     }
     
-    if(autoMode == true && data <= LowThresh && autoFlip2 == false )
-    {
-      IndautoOff();                   // see comment above  
-      //Serial.println(string); //debug
-      delay(100);
-      autoFlip2 = true;
-    }          
-    
+  if(autoMode == true && data <= LowThresh && autoFlip2 == false )
+  {
+    IndautoOff();                   // see comment above  
+    //Serial.println(string); //debug
+    delay(100);
+    autoFlip2 = true;
+  }          
+  
 }
 
 

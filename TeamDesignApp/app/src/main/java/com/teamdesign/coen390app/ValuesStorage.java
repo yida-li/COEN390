@@ -176,7 +176,7 @@ String createTable1 = "CREATE TABLE " + TABLE_NAME1 + " (ID INTEGER PRIMARY KEY 
         String ALTER_TBL ="delete from " + TABLE_NAME1 +
                 " where "+COL1 +" in (select "+ COL1 +" from "+ TABLE_NAME1+" order by _ID LIMIT 3);";
 
-        db.delete(TABLE_NAME1, "ID > "0, null);  // empty all pre-existing database
+        db.delete(TABLE_NAME1, "ID > "+0, null);  // empty all pre-existing database
 
       
     }

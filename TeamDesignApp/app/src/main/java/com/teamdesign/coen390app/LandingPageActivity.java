@@ -91,7 +91,8 @@ public class LandingPageActivity extends AppCompatActivity {
     private Button toGraph;
     private Button toControl;
 
-
+    private int HighThresh = 350;
+    private int LowThresh = 300;
 
 
     @Override
@@ -267,8 +268,7 @@ public class LandingPageActivity extends AppCompatActivity {
         private double temp;
 
         //specified
-        private int airQUpperThresh = 300;
-        private int airQLowerThresh = airQUpperThresh - 20;
+
         private int humiSetLevel = 25;
 
         public ReadInput() {
@@ -310,7 +310,7 @@ public class LandingPageActivity extends AppCompatActivity {
                             try {
                                 airQ = Integer.parseInt(firstInt.trim());
                             } catch (NumberFormatException e) {
-                                airQ = airQLowerThresh + 1;
+                                airQ = LowThresh + 1;
                             }
                             runOnUiThread(new Runnable()
                             {
@@ -355,7 +355,7 @@ public class LandingPageActivity extends AppCompatActivity {
                         Log.d(TAG, "__INPUT__" + firstInt.trim());
 
                         //Auto Fan Logic
-                        if( airQ >= airQUpperThresh && UserSelectFanType == true && autoFlip == false)
+                        if( airQ >= HighThresh && UserSelectFanType == true && autoFlip == false)
                         {
                             if(counter >1)
                             {
@@ -363,7 +363,7 @@ public class LandingPageActivity extends AppCompatActivity {
                                 running =true;
                                 counter--;
                             }
-                            AutoturnOnFan();
+
                             if(imax < airQ)
                             {imax = airQ;}
 
@@ -378,9 +378,9 @@ public class LandingPageActivity extends AppCompatActivity {
                             autoFlip = true;
                         }
 
-                        if( airQ < airQLowerThresh && UserSelectFanType == true && autoFlip == true)
+                        if( airQ < LowThresh && UserSelectFanType == true && autoFlip == true)
                         {
-                            AutoturnOffFan();
+
                             runOnUiThread(new Runnable()
                             {
                                 @Override
@@ -396,12 +396,12 @@ public class LandingPageActivity extends AppCompatActivity {
                         //Auto Humidity Logic
                         if( humi > humiSetLevel && UserSelectFanType == true && humiFlip == false)
                         {
-                            //AutoturnOffHumidifier();
+
                             runOnUiThread(new Runnable()
                             {
                                 @Override
                                 public void run() {
-                                    notificationText.setText("Above set Humidity Level " + String.valueOf(humiSetLevel));
+
                                 }
                             });
 //                            notificationText.setText("Above set Humidity Level " + String.valueOf(humiSetLevel));
@@ -410,12 +410,11 @@ public class LandingPageActivity extends AppCompatActivity {
 
                         if( humi <= humiSetLevel && UserSelectFanType == true && humiFlip == true)
                         {
-                            //AutoturnOnHumidifier();
+
                             runOnUiThread(new Runnable()
                             {
                                 @Override
                                 public void run() {
-                                    notificationText.setText("Below set Humidity " + String.valueOf(humiSetLevel));
                                 }
                             });
 //                            notificationText.setText("Below set Humidity " + String.valueOf(humiSetLevel));
@@ -452,73 +451,9 @@ public class LandingPageActivity extends AppCompatActivity {
     }
 
 
-    private void AutoturnOffFan()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("AF".toString().getBytes());
-                Log.d(TAG, "AutoturnOffFan: AF");
-
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-    }
 
 
-    private void AutoturnOnFan()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("AO".toString().getBytes());
-                Log.d(TAG, "AutoturnOnFan: AO");
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-    }
 
-    private void AutoturnOffHumidifier()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("AHF".toString().getBytes());
-                Log.d(TAG, "AutoturnOffHumidfier: AHF");
-
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-    }
-
-
-    private void AutoturnOnHumidifier()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("AHO".toString().getBytes());
-                Log.d(TAG, "AutoturnOnHumidifier: AHO");
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-    }
 
     public void sendAlert1(){
 

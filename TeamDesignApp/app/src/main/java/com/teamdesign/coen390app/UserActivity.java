@@ -90,7 +90,6 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
     private Button SensHigh;
     private int HighThresh = 350;
     private int LowThresh = 300;
-    private int count = 0;
 
 
     @Override
@@ -137,8 +136,8 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
             @Override
             public void onClick(View v)
             {
-                HighThresh = 600;
-                LowThresh = 500;
+                HighThresh = 800;
+                LowThresh = 600;
                 Toast.makeText(UserActivity.this, "Changed to Low Sensitivity (600 PPM)", Toast.LENGTH_SHORT).show();
                 CallSensLow();
             }
@@ -191,8 +190,8 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
                 FanButton.setChecked(false);
                 toggleHumidityButton.setEnabled(false);
                 toggleHumidityButton.setChecked(false);
-                turnOffFan();
-                turnOffHumidity();
+//                turnOffFan();
+//                turnOffHumidity();
                 AutoModeOn();
                 //TODO automode only can turned when double tapped
             }
@@ -317,7 +316,7 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
                                     Log.d(TAG, "AQ = " + String.valueOf(airQ));
                                     Log.d(TAG, "H = " + String.valueOf(humi));
                                     Log.d(TAG, "T = " + String.valueOf(temp));
-                                    Log.d(TAG, "__INPUT__" + firstInt.trim());
+                                    Log.d(TAG, "__INPUT__ " + firstInt.trim());
 
                                 //Auto Fan Logic
                                     if( airQ >= HighThresh && UserSelectFanType == true && autoFlip == false)
@@ -331,7 +330,7 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
                                         //AutoturnOnFan();
                                         if(imax < airQ)
                                         {imax = airQ;}
-                                        notificationText.setText("Air threshold is reached! " + imax);
+                                       notificationText.setText("Air threshold is reached! " + imax);
                                         autoFlip = true;
                                     }
 
@@ -347,14 +346,14 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
                                     if( humi > humiSetLevel && UserSelectFanType == true && humiFlip == false)
                                     {
                                         //AutoturnOffHumidifier();
-                                        notificationText.setText("Above set Humidity Level " + String.valueOf(humiSetLevel));
+                                        //notificationText.setText("Above set Humidity Level " + String.valueOf(humiSetLevel));
                                         humiFlip = true;
                                     }
 
                                     if( humi <= humiSetLevel && UserSelectFanType == true && humiFlip == true)
                                     {
                                         //AutoturnOnHumidifier();
-                                        notificationText.setText("Below set Humidity " + String.valueOf(humiSetLevel));
+                                        //notificationText.setText("Below set Humidity " + String.valueOf(humiSetLevel));
                                         humiFlip = false;
                                     }
 
@@ -420,7 +419,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             } catch (IOException e) {
                 msg("Error");
             }
-            Log.d(TAG, " SL ");
+            //Log.d(TAG, " SL ");
         }
     }
     public void CallSensNormal(){
@@ -430,7 +429,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             } catch (IOException e) {
                 msg("Error");
             }
-            Log.d(TAG, " SN ");
+            //Log.d(TAG, " SN ");
         }
     }
     public void CallSensHigh(){
@@ -440,7 +439,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             } catch (IOException e) {
                 msg("Error");
             }
-            Log.d(TAG, " SH ");
+            //Log.d(TAG, " SH ");
         }
     }
 
@@ -451,7 +450,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             } catch (IOException e) {
                 msg("Error");
             }
-            Log.d(TAG, " AMO ");
+            //Log.d(TAG, " AMO ");
         }
     }
 
@@ -462,7 +461,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             } catch (IOException e) {
                 msg("Error");
             }
-            Log.d(TAG, " AMF ");
+            //Log.d(TAG, " AMF ");
         }
     }
 
@@ -475,41 +474,6 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     }
 
 
-    private void AutoturnOffFan()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("AF".toString().getBytes());
-                Log.d(TAG, "AutoturnOffFan: AF");
-
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-        FanButton.setChecked(false);
-    }
-
-
-private void AutoturnOnFan()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("AO".toString().getBytes());
-                FanButton.setChecked(true);
-                Log.d(TAG, "AutoturnOnFan: AO");
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-    }
 
     private void AutoturnOffHumidifier()
     {
@@ -632,12 +596,13 @@ private void AutoturnOnFan()
             try
             {
                 mBTSocket.getOutputStream().write("HO".toString().getBytes());
-                Log.d(TAG, "turnOnHumidity: HO");
+
             }
             catch (IOException e)
             {
                 msg("Error");
             }
+            Log.d(TAG, "turnOnHumidity: HO");
         }
     }
     private void turnOffHumidity()
@@ -647,12 +612,12 @@ private void AutoturnOnFan()
             try
             {
                 mBTSocket.getOutputStream().write("HF".toString().getBytes());
-                Log.d(TAG, "turnOffHumidity: HF");
             }
             catch (IOException e)
             {
                 msg("Error");
             }
+            Log.d(TAG, "turnOffHumidity: HF");
         }
     }
 
