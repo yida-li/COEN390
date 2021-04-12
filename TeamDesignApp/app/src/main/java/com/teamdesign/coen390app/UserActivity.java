@@ -1,7 +1,9 @@
-                                            package com.teamdesign.coen390app;
+package com.teamdesign.coen390app;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 import java.lang.Integer;
@@ -21,9 +23,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Vibrator;
+import android.content.Context;
+import android.os.Build;
+import android.os.VibrationEffect;
 import android.widget.ToggleButton;
 
 import androidx.core.app.NotificationCompat;
@@ -31,29 +40,43 @@ import androidx.core.app.NotificationManagerCompat;
 
 import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_1_ID;
 import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
+import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_3_ID;
 
-                                            public class UserActivity extends Activity {
+public class UserActivity extends Activity {
 
+    private boolean Logflag = false;
+
+    // initializing sqlite database manager
+    DatabaseHelper mDatabaseHelper;
 
     // intially default mode
     protected boolean UserSelectAlertType=true;
     protected boolean UserSelectFanType= true;
     protected boolean UserSelectFanManual =true;
-    protected boolean autoFlip = false;
-    protected boolean humiFlip = true;
+
+    private ToggleButton toggleAlertButton;
+    private ToggleButton toggleFanButton;
+    private ToggleButton FanButton;
 
     // Notification manager initialization
     private NotificationManagerCompat notificationManager;
 
-    // maximum threshold value
+
+    // THRESHOLDS
+    private int HighThresh = 700;
+    private int LowThresh = 500;
+
+    // maximum sensor value
     private int imax = 0;
-    private double humiMax = 0;
+
+
+    private int count = 0;
 
     // Integer value used for time system
     private int seconds = 0;
 
     // Integer counter used manipulate the threshold Notification
-    public int counter =5;
+    public int counter =10;
 
     // TextView layout to display a notification if Air PPM reach a certain threshold
     private TextView notificationText;
@@ -67,7 +90,7 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
     private boolean mIsBluetoothConnected = false;
     private BluetoothDevice mDevice;
     private ProgressDialog progressDialog;
-    private static final String TAG = "User Activity";
+    private static final String TAG = "BlueTest5-MainActivity";
     private int mMaxChars = 50000;
     private UUID mDeviceUUID;
     private BluetoothSocket mBTSocket;
@@ -76,26 +99,25 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
     // Widgets for Main screen layout
     private TextView mTxtReceive;
     private Button mBtnClearInput;
+    private Button logButton;
+    private Button detailButton;
     private ScrollView scrollView;
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
-    private ToggleButton toggleAlertButton;
-    private ToggleButton toggleFanButton;
-    private ToggleButton FanButton;
-    private ToggleButton toggleHumidityButton;
 
-    // THRESHOLDS
+    // Widgets Sensitivity Buttons
     private Button SensLow;
     private Button SensNormal;
     private Button SensHigh;
-    private int HighThresh = 350;
-    private int LowThresh = 300;
-    private int count = 0;
+
+    // switch to turn the fan and sensor off
+    private  Switch sensSwitch, fanSwitch;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // setContentView basically connects this instance to the designated xml file
         setContentView(R.layout.activity_user_activity);
 
@@ -112,8 +134,8 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
         mDevice = b.getParcelable(MainActivity.DEVICE_EXTRA);
         mDeviceUUID = UUID.fromString(b.getString(MainActivity.DEVICE_UUID));
         mMaxChars = b.getInt(MainActivity.BUFFER_SIZE);
-        notificationText =(TextView) findViewById(R.id.notificationText);
-        mTxtReceive = (TextView) findViewById(R.id.txtReceiveGraph);
+        notificationText = findViewById(R.id.notificationText);
+        mTxtReceive = (TextView) findViewById(R.id.txtReceive);
         chkScroll = (CheckBox) findViewById(R.id.chkScroll);
         chkReceiveText = (CheckBox) findViewById(R.id.chkReceiveText);
         scrollView = (ScrollView) findViewById(R.id.viewScroll);
@@ -121,25 +143,32 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
 
 
+        detailButton=(Button)findViewById(R.id.detailButton);
 
         toggleAlertButton=(ToggleButton)findViewById(R.id.toggleAlertButton);
         toggleFanButton=(ToggleButton)findViewById(R.id.toggleFanButton);
         FanButton=(ToggleButton)findViewById(R.id.toggleButtonMan);
-        toggleHumidityButton=(ToggleButton)findViewById((R.id.toggleButtonHumidity));
 
-
-        //thresh hold tester
         SensLow=findViewById(R.id.SensLow);
         SensNormal=findViewById(R.id.SensNormal);
         SensHigh=findViewById(R.id.SensHigh);
 
+        mDatabaseHelper = new DatabaseHelper(this);
+
+
+
+
+        FanButton.setEnabled(false);
+      //  AutoMode();
+      //  CallSensNormal();
+
         SensLow.setOnClickListener(new View.OnClickListener(){
-            @Override
+                 @Override
             public void onClick(View v)
             {
-                HighThresh = 600;
+                HighThresh = 850;
                 LowThresh = 500;
-                Toast.makeText(UserActivity.this, "Changed to Low Sensitivity (600 PPM)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserActivity.this, "Changed to Low Sensitivity (850 PPM)", Toast.LENGTH_SHORT).show();
                 CallSensLow();
             }
         });
@@ -148,9 +177,9 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
             @Override
             public void onClick(View v)
             {
-                HighThresh = 500;
-                LowThresh = 400;
-                Toast.makeText(UserActivity.this, "Changed to Normal Sensitivity (500 PPM)", Toast.LENGTH_SHORT).show();
+                HighThresh = 700;
+                LowThresh = 500;
+                Toast.makeText(UserActivity.this, "Changed to Normal Sensitivity (700 PPM)", Toast.LENGTH_SHORT).show();
                 CallSensNormal();
             }
         });
@@ -159,71 +188,69 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
             @Override
             public void onClick(View v)
             {
-                HighThresh = 350;
-                LowThresh = 250;
-                Toast.makeText(UserActivity.this, "Changed to High Sensitivity (350 PPM)", Toast.LENGTH_SHORT).show();
+                HighThresh = 600;
+                LowThresh = 500;
+                Toast.makeText(UserActivity.this, "Changed to High Sensitivity (600 PPM)", Toast.LENGTH_SHORT).show();
                 CallSensHigh();
             }
         });
-
 
         toggleAlertButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
 
                 UserSelectAlertType=false;
+                Toast.makeText(UserActivity.this, "Vibrate Mode Enabled", Toast.LENGTH_SHORT).show();
+
             } else {
                 UserSelectAlertType=true;
+                Toast.makeText(UserActivity.this, "Silent Mode Enabled", Toast.LENGTH_SHORT).show();
+
                 // The toggle is disabled
             }
         });
 
-        FanButton.setEnabled(false);
-        toggleHumidityButton.setEnabled((false));
         toggleFanButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 UserSelectFanType=false;
+                ManualMode();
                 FanButton.setEnabled(true);
-                toggleHumidityButton.setEnabled((true));
-                AutoModeOff();
+                Toast.makeText(UserActivity.this, "Enabled Manual Mode", Toast.LENGTH_SHORT).show();
+
             } else {
                 UserSelectFanType=true;
-                FanButton.setEnabled(false);
-                FanButton.setChecked(false);
-                toggleHumidityButton.setEnabled(false);
-                toggleHumidityButton.setChecked(false);
-                turnOffFan();
-                turnOffHumidity();
-                AutoModeOn();
-                //TODO automode only can turned when double tapped
+                  AutoMode();
+                  FanButton.setEnabled(false);
+//                  FanButton.setText(0xFFA38F8F);
+                Toast.makeText(UserActivity.this, "Enabled Auto Mode", Toast.LENGTH_SHORT).show();
+
+                // The toggle is disabled
             }
         });
 
         FanButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked && UserSelectFanType == false) {
              //   UserSelectFanManual=false;
-                turnOnFan();
+                turnOffFan();
             } else
             if (!isChecked && UserSelectFanType == false)
             {
                // UserSelectFanManual=true;
-                turnOffFan();
+                turnOnFan();
                 // The toggle is disabled
             }
         });
 
-        toggleHumidityButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked ) {
-                Log.d(TAG, "TURNING ON Humidifier");
-                turnOnHumidity();
-            } else
-            if (!isChecked)
+
+
+        detailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
             {
-                turnOffHumidity();
-                Log.d(TAG, "TURNING OFF Humidifier");
+                Intent intent = new Intent( getApplicationContext(), DetailActivity.class);
+             //   intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
-
-
 
         notificationManager = NotificationManagerCompat.from(this);
 
@@ -233,10 +260,11 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
             public void onClick(View arg0) {
                 mTxtReceive.setText("");
                 notificationText.setText("");
+                seconds = 0;
             }
         });
     } // end of Oncreate function
-
+    
     /*
     Thread based child-0process datapath to constantly uplaod stream of
      */
@@ -244,13 +272,6 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
 
         private boolean bStop = false;
         private Thread t;
-
-        //Read variables
-        private int airQ;
-        private double humi;
-        private double temp;
-
-        private int humiSetLevel = 30;
 
         public ReadInput() {
             t = new Thread(this, "Input Thread");
@@ -289,74 +310,50 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
                                 public void run() {
                                     mTxtReceive.append(strInput);
 
-                                    //TODO : INCLUDE THE DECIMAL POINTS
-                                    String firstInt = strInput.replaceAll(".*?(\\d+).*", "$1");
 
-                                    if((strInput.trim().charAt(0)) == 'A') {
-                                        try {
-                                            airQ = Integer.parseInt(firstInt.trim());
-                                        } catch (NumberFormatException e) {
-                                            airQ = LowThresh + 1;
-                                        }
+                                    String firstInt = strInput.replaceFirst(".*?(\\d+).*", "$1");
+                                    int i;
+                                    try {
+                                        i = Integer.parseInt(firstInt.trim());
+                                       if(imax<i)
+                                       { imax = i;}
                                     }
-                                    if((strInput.trim().charAt(0)) == 'H') {
-                                        try {
-                                            humi = Float.parseFloat(firstInt.trim());
-                                        } catch (NumberFormatException e) {
-                                            humi = 50.0;
-                                        }
-                                    }
-                                    if((strInput.trim().charAt(0)) == 'T') {
-                                        try {
-                                            temp = Float.parseFloat(firstInt.trim());
-                                        } catch (NumberFormatException e) {
-                                            temp = 22.0;
-                                        }
-                                    }
-
-                                    Log.d(TAG, "AQ = " + String.valueOf(airQ));
-                                    Log.d(TAG, "H = " + String.valueOf(humi));
-                                    Log.d(TAG, "T = " + String.valueOf(temp));
-                                    Log.d(TAG, "__INPUT__" + firstInt.trim());
-
-                                //Auto Fan Logic
-                                    if( airQ >= HighThresh && UserSelectFanType == true && autoFlip == false)
+                                    catch (NumberFormatException e)
                                     {
-                                        if(counter >1)
-                                        {
-                                            sendAlertOption();
+                                        i = LowThresh + 1;
+                                    }
+
+                                    if( i>=HighThresh && UserSelectFanType == true)
+				                  {
+                                      //AutoMode();
+                                      notificationText.setText("Air threshold is reached! " + imax);
+                                      sendAlertOption();
+                                     // sendAlert1();
+                                        if(counter>1)
+                                        { //sendAlertOption();
                                             running =true;
-                                            counter--;
-                                        }
-                                        //AutoturnOnFan();
-                                        if(imax < airQ)
-                                        {imax = airQ;}
-                                        notificationText.setText("Air threshold is reached! " + imax);
-                                        autoFlip = true;
-                                    }
+                                            counter--;}
+                                        Logflag = true;
+					           // 	AutoturnOnFan();
+                                   }
+		            		else
+				                 {
+			            	   if(i<=500 && seconds!=0 && UserSelectFanType == true && Logflag ==true)
+			                	   {
+				                //	AutoturnOffFan();
+				                	running = false;
+                                       String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                                       Date date = new Date();
+                                       SimpleDateFormat dateFormat = new SimpleDateFormat("dd / 04 / yyyy");
+                                       String td = dateFormat.format(date);
 
-                                    if( airQ < LowThresh && UserSelectFanType == true && autoFlip == true)
-                                    {
-                                        //AutoturnOffFan();
-                                        notificationText.setText(" ");
-                                        running = false;
-                                        autoFlip = false;
-                                    }
+                                       AddData("         "+ td+ " " +currentTime+"\n"+"         Smoke in PPM "+imax+"\n"+ "         Fan Duration: "+seconds+ " Seconds\n\n");
 
-                                //Auto Humidity Logic
-                                    if( humi > humiSetLevel && UserSelectFanType == true && humiFlip == false)
-                                    {
-                                        //AutoturnOffHumidifier();
-                                        notificationText.setText("Above set Humidity Level " + String.valueOf(humiSetLevel));
-                                        humiFlip = true;
-                                    }
-
-                                    if( humi <= humiSetLevel && UserSelectFanType == true && humiFlip == true)
-                                    {
-                                        //AutoturnOnHumidifier();
-                                        notificationText.setText("Below set Humidity " + String.valueOf(humiSetLevel));
-                                        humiFlip = false;
-                                    }
+                                       //seconds = 0;
+				                	imax = 0;
+				                	Logflag = false;
+				                	}
+				                 }
 
                                     int txtLength = mTxtReceive.getEditableText().length();
                                     if(txtLength > mMaxChars){
@@ -376,7 +373,7 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
                         }
 
                     }
-                    Thread.sleep(1500);
+                    Thread.sleep(500);
                 }
             } catch (IOException e) {
 // TODO Auto-generated catch block
@@ -393,26 +390,8 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
     }
 
 
+    //Send to Arduino New Thresholds:
 
- /*  Unused function for testing
-
-  private void Vibration(){
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-// Vibrate for 500 milliseconds
-if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-    v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-} else {
-    //deprecated in API 26
-    v.vibrate(500);
-}
-    }
-*/
-
-
-    /*
-    Sends Alert to user even if application is in background
-     */
-//---Threshold setting functions---
     public void CallSensLow(){
         if (mBTSocket != null) {
             try {
@@ -420,7 +399,6 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             } catch (IOException e) {
                 msg("Error");
             }
-            Log.d(TAG, " SL ");
         }
     }
     public void CallSensNormal(){
@@ -430,7 +408,6 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             } catch (IOException e) {
                 msg("Error");
             }
-            Log.d(TAG, " SN ");
         }
     }
     public void CallSensHigh(){
@@ -440,40 +417,37 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             } catch (IOException e) {
                 msg("Error");
             }
-            Log.d(TAG, " SH ");
         }
     }
 
-    private void AutoModeOn() {
+
+    public void sendAlertOption() {
+        if (!UserSelectAlertType) {
+            sendAlert1();
+        } else {
+            sendAlert2();
+        }
+    }
+
+    private void AutoMode() {
+        if (mBTSocket != null) {
+            try {
+                mBTSocket.getOutputStream().write("AM".toString().getBytes());
+            } catch (IOException e) {
+                msg("Error");
+            }
+        }
+    }
+
+    private void ManualMode() {
         if (mBTSocket != null) {
             try {
                 mBTSocket.getOutputStream().write("AMO".toString().getBytes());
             } catch (IOException e) {
                 msg("Error");
             }
-            Log.d(TAG, " AMO ");
         }
     }
-
-    private void AutoModeOff() {
-        if (mBTSocket != null) {
-            try {
-                mBTSocket.getOutputStream().write("AMF".toString().getBytes());
-            } catch (IOException e) {
-                msg("Error");
-            }
-            Log.d(TAG, " AMF ");
-        }
-    }
-
-    public void sendAlertOption(){
-        if(!UserSelectAlertType){
-            sendAlert1();
-        }
-        else
-            sendAlert2();
-    }
-
 
     private void AutoturnOffFan()
     {
@@ -482,15 +456,12 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             try
             {
                 mBTSocket.getOutputStream().write("AF".toString().getBytes());
-                Log.d(TAG, "AutoturnOffFan: AF");
-
             }
             catch (IOException e)
             {
                 msg("Error");
             }
         }
-        FanButton.setChecked(false);
     }
 
 
@@ -501,44 +472,6 @@ private void AutoturnOnFan()
             try
             {
                 mBTSocket.getOutputStream().write("AO".toString().getBytes());
-                FanButton.setChecked(true);
-                Log.d(TAG, "AutoturnOnFan: AO");
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-    }
-
-    private void AutoturnOffHumidifier()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("AHF".toString().getBytes());
-                Log.d(TAG, "AutoturnOffHumidfier: AHF");
-
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-        FanButton.setChecked(false);
-    }
-
-
-    private void AutoturnOnHumidifier()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("AHO".toString().getBytes());
-                FanButton.setChecked(true);
-                Log.d(TAG, "AutoturnOnHumidifier: AHO");
             }
             catch (IOException e)
             {
@@ -552,7 +485,7 @@ private void AutoturnOnFan()
         Notification notification = new NotificationCompat.Builder(UserActivity.this,CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_notification2)
                 .setContentTitle("Smoke Particles Detected!")
-                .setContentText("Vibrate Mode Testing")
+                .setContentText("Vibrate Mode!")
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
@@ -568,8 +501,8 @@ private void AutoturnOnFan()
 
         Notification notification = new NotificationCompat.Builder(UserActivity.this,CHANNEL_2_ID)
                 .setSmallIcon(R.drawable.ic_notification1)
-                .setContentTitle("Kraken HyperFan Released!")
-                .setContentText("Silent Mode Testing!")
+                .setContentTitle("Smoke Particles Detected!")
+                .setContentText("Silent Mode!")
                 //.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
@@ -579,21 +512,6 @@ private void AutoturnOnFan()
         notificationManager.notify(2, notification);
     }
 
-
-
-    private void Disconnect()
-    {
-        if (mBTSocket!=null) //If the btSocket is busy
-        {
-            try
-            {
-                mBTSocket.close(); //close connection
-            }
-            catch (IOException e)
-            { msg("Error");}
-        }
-        finish(); //return to the first layout
-    }
     private void turnOffFan()
     {
         if (mBTSocket!=null)
@@ -601,7 +519,6 @@ private void AutoturnOnFan()
             try
             {
                 mBTSocket.getOutputStream().write("TF".toString().getBytes());
-                Log.d(TAG, "turnOffFan: TF");
             }
             catch (IOException e)
             {
@@ -616,38 +533,6 @@ private void AutoturnOnFan()
             try
             {
                 mBTSocket.getOutputStream().write("TO".toString().getBytes());
-                Log.d(TAG, "turnOnFan: TO");
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-    }
-
-    private void turnOnHumidity()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("HO".toString().getBytes());
-                Log.d(TAG, "turnOnHumidity: HO");
-            }
-            catch (IOException e)
-            {
-                msg("Error");
-            }
-        }
-    }
-    private void turnOffHumidity()
-    {
-        if (mBTSocket!=null)
-        {
-            try
-            {
-                mBTSocket.getOutputStream().write("HF".toString().getBytes());
-                Log.d(TAG, "turnOffHumidity: HF");
             }
             catch (IOException e)
             {
@@ -659,6 +544,17 @@ private void AutoturnOnFan()
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
     }
+
+    public void AddData(String newEntry) {
+        boolean insertData = mDatabaseHelper.addData(newEntry);
+
+//        if (insertData) {
+//            toastMessage("Data Registered");
+//        } else {
+//            toastMessage("Something went wrong");
+//        }
+    }
+
 
     @Override
     protected void onPause() {
@@ -755,7 +651,8 @@ private void AutoturnOnFan()
 
     }
 
-    //Disconnect aysynchronously to blueooth
+    //Disconnect aysynchronously to bluetooth
+
     private class DisConnectBT extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -784,9 +681,9 @@ private void AutoturnOnFan()
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             mIsBluetoothConnected = false;
-            if (mIsUserInitiatedDisconnect) {
-                finish();
-            }
+           // if (mIsUserInitiatedDisconnect) {
+           //     finish();
+           // }
         }
     }
 
@@ -846,5 +743,4 @@ private void AutoturnOnFan()
             }
         });
     }
-
 }

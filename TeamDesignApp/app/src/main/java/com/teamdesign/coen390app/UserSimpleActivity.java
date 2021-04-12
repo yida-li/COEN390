@@ -1,6 +1,9 @@
 package com.teamdesign.coen390app;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,11 +23,20 @@ import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Vibrator;
+import android.content.Context;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.widget.ToggleButton;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -33,24 +45,41 @@ import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_1_ID;
 import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_2_ID;
 import static com.teamdesign.coen390app.NotificationActivity.CHANNEL_3_ID;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.Viewport;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
+
+
+
 public class UserSimpleActivity extends Activity {
 
-    public int cnt = 0;
+    // initializing sqlite database manager
     DatabaseHelper mDatabaseHelper;
 
     private Button historyButton;
+    public int cnt = 0;
+
     // intially default mode
     protected boolean UserSelectAlertType=true;
     protected boolean UserSelectFanType= true;
+    protected boolean UserSelectFanManual =true;
 
-    private boolean autoFlip = false;
+    private ToggleButton toggleAlertButton;
+    private ToggleButton toggleFanButton;
+    private ToggleButton FanButton;
 
     // Notification manager initialization
     private NotificationManagerCompat notificationManager;
 
     // maximum threshold value
     private int imax = 0;
+    int tempVal = imax;
 
+
+    private boolean graphflag = true;
     private boolean  fanThresholdFlag=true;
 
     // Integer value used for time system
@@ -71,7 +100,7 @@ public class UserSimpleActivity extends Activity {
     private boolean mIsBluetoothConnected = false;
     private BluetoothDevice mDevice;
     private ProgressDialog progressDialog;
-    private static final String TAG = "UserSimple Activity";
+    private static final String TAG = "BlueTest5-MainActivity";
     private int mMaxChars = 50000;
     private UUID mDeviceUUID;
     private BluetoothSocket mBTSocket;
@@ -83,13 +112,52 @@ public class UserSimpleActivity extends Activity {
     private CheckBox chkScroll;
     private CheckBox chkReceiveText;
 
+    private Button DetailPageLog;
+
+    private Button showGraph;
+
+    // switch to turn the fan and sensor off
+    private  Switch sensSwitch, fanSwitch;
+
+    GraphView airQGraphView;
+    private LineGraphSeries<DataPoint> airQSeries;
+    private int airQLastVal = 0;
+    NumberStorage numhelper;
+
+    private TextView AirQRead;
+
+    public UserSimpleActivity() {
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // setContentView basically connects this instance to the designated xml file
         setContentView(R.layout.activity_user_simple);
+
+        numhelper = new NumberStorage(this);
+        //numhelper.recycle();
+
+        AirQRead = findViewById(R.id.AirQRead);
+
+        airQGraphView = findViewById(R.id.airQGraphView);
+        airQSeries = new LineGraphSeries<DataPoint>();
+        airQGraphView.addSeries(airQSeries);
+        Viewport viewport1 = airQGraphView.getViewport();
+        viewport1.setYAxisBoundsManual(true);
+        viewport1.setMinY(350);
+        viewport1.setMaxY(1000);
+        viewport1.setBorderColor(R.color.purple_200);
+        viewport1.setScrollable(true);
+        //viewport1.setScalable(true);
+        airQGraphView.setTitle("Graph of Smoke in PPM");
+        airQGraphView.setTitleTextSize(80);
+        airQGraphView.setTitleColor(R.color.purple_200);
+        GridLabelRenderer gridLabel1 = airQGraphView.getGridLabelRenderer();
+        gridLabel1.setHorizontalAxisTitle("Live Sensor Readings");
+        gridLabel1.setVerticalAxisTitle("CO2 in PPM");
+
 
         ActivityHelper.initialize(this);
         if (savedInstanceState != null) {
@@ -105,11 +173,16 @@ public class UserSimpleActivity extends Activity {
         mDeviceUUID = UUID.fromString(b.getString(MainActivity.DEVICE_UUID));
         mMaxChars = b.getInt(MainActivity.BUFFER_SIZE);
         notificationText =(TextView) findViewById(R.id.notificationText);
-        mTxtReceive = (TextView) findViewById(R.id.txtReceiveGraph);
+        mTxtReceive = (TextView) findViewById(R.id.txtReceive);
         chkScroll = (CheckBox) findViewById(R.id.chkScroll);
         chkReceiveText = (CheckBox) findViewById(R.id.chkReceiveText);
         scrollView = (ScrollView) findViewById(R.id.viewScroll);
         mDatabaseHelper = new DatabaseHelper(this);
+
+
+        DetailPageLog = findViewById(R.id.DetailPageLog);
+        showGraph = findViewById(R.id.showGraph);
+
 
         // mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
         mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
@@ -117,6 +190,29 @@ public class UserSimpleActivity extends Activity {
         notificationManager = NotificationManagerCompat.from(this);
 
         historyButton =(Button)findViewById(R.id.historyButton);
+
+
+        DetailPageLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent( getApplicationContext(), DetailLogActivity.class);
+            //    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
+        showGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                graphflag = true;
+                Intent intent = new Intent( getApplicationContext(), GraphActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
         historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -124,10 +220,10 @@ public class UserSimpleActivity extends Activity {
                 Intent intent = new Intent( getApplicationContext(), ListDataActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-
                 startActivity(intent);
             }
         });
+
 
     } // end of Oncreate function
 
@@ -138,17 +234,7 @@ public class UserSimpleActivity extends Activity {
 
         private boolean bStop = false;
         private Thread t;
-
-        //Read variables
-        private int airQ;
-        private double humi;
-        private double temp;
-
-        //specified
-        private int airQUpperThresh = 300;
-        private int airQLowerThresh = 280;
-        private int HumiUpperThresh;
-        private int HumiLowerThresh;
+        private int AirQ;
 
         public ReadInput() {
             t = new Thread(this, "Input Thread");
@@ -192,85 +278,94 @@ public class UserSimpleActivity extends Activity {
                                         cnt++;
                                     }
 
-                                    //TODO : INCLUDE THE DECIMAL POINTS
-                                    String firstInt = strInput.replaceAll(".*?(\\d+).*", "$1");
 
-                                    if((strInput.trim().charAt(0)) == 'A') {
-                                        try {
-                                            airQ = Integer.parseInt(firstInt.trim());
-                                        } catch (NumberFormatException e) {
-                                            airQ = airQLowerThresh + 1;
-                                        }
-                                    }
-                                    if((strInput.trim().charAt(0)) == 'H') {
-                                        try {
-                                            humi = Float.parseFloat(firstInt.trim());
-                                        } catch (NumberFormatException e) {
-                                            humi = 50.0;
-                                        }
-                                    }
-                                    if((strInput.trim().charAt(0)) == 'T') {
-                                        try {
-                                            temp = Float.parseFloat(firstInt.trim());
-                                        } catch (NumberFormatException e) {
-                                            temp = 22.0;
-                                        }
-                                    }
+                                    String firstInt = strInput.replaceFirst(".*?(\\d+).*", "$1");
+                                    int i;
+                                    try {
+                                        i = Integer.parseInt(firstInt.trim());
+                                        AirQ = Integer.parseInt(firstInt.trim());
+                                        airQSeries.appendData(new DataPoint(airQLastVal++, i), false, 1000);
+                                        runOnUiThread(new Runnable()
+                                        {
+                                            @Override
+                                            public void run() {
+                                                AirQRead.setText(String.valueOf(AirQ));
+                                            }
+                                        });
+                                        //  numhelper.addNumber(i);
+                                        if(imax<i)
+                                        { imax = i;}
 
-                                    Log.d(TAG, "AQ = " + String.valueOf(airQ));
-                                    Log.d(TAG, "H = " + String.valueOf(humi));
-                                    Log.d(TAG, "T = " + String.valueOf(temp));
-                                    Log.d(TAG, "__INPUT__" + firstInt.trim());
+                                        if (i >= 500) {
+                                            if (i >= 700) {
+                                                    numhelper.addNumber(i);
+                                                    graphflag = false;
+                                            }
+                                            else if(graphflag = false){
+                                                numhelper.addNumber(i);
+                                            }
+                                        }
 
-                                    if( airQ>=airQUpperThresh && UserSelectFanType == true && autoFlip == false)
+                                    }
+                                    catch (NumberFormatException e)
                                     {
+                                        i = 501;
+                                    }
 
+
+                                    if( i>=700 &&  fanThresholdFlag==true)
+                                    {
+                                        //  if(imax < i)
+                                        // { imax = i;}
+
+
+                                        Log.d(TAG, "num helper");
                                         if(counter >1)
                                         {
+//                                            if(imax < i)
+//                                            {imax = i;}
                                             notificationText.setText(" Air threshold is reached!" + imax);
+
                                             //  sendAlertOption();
                                             mTxtReceive.append("         Air particles detected !");
                                             mTxtReceive.append("\n");
+
+
 
                                             // mTxtReceive.append("Air p articles detected !:"+"\n");
                                             running =true;
                                             counter--;
 
+
                                             fanThresholdFlag=false;
-                                            autoFlip = true;
                                         }
                                         AutoturnOnFan();
-                                        if(imax < airQ)
-                                        {imax = airQ;}
                                     }
-
-                                    if(airQ <= airQLowerThresh && UserSelectFanType ==  true  && seconds !=0  && autoFlip == true)
+                                    else
                                     {
-                                        AutoturnOffFan();
-                                        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+//                                        if(i>=300 && i!=151)
+//                                        { numhelper.addNumber(i);}
 
-                                        Date date = new Date();
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd / 04 / yyyy");
-                                        String td = dateFormat.format(date);
-                                        running = false;
-                                        mTxtReceive.append(
-                                                "         "+ td+ " " +currentTime+"\n"+
-                                                "         Smoke in PPM "+imax+"\n"+
-                                                "         Humidity in % "+ humi +"\n"+
-                                                "         Temperature in C "+ temp +"\n"+
-                                                "         Fan Duration: "+seconds+ " Seconds\n\n" );
-                                        AddData(
-                                                "         "+ td+ " " +currentTime+"\n"+
-                                                "         Smoke in PPM "+imax+"\n"+
-                                                "         Humidity in % "+ humi +"\n"+
-                                                "         Temperature in C "+ temp +"\n"+
-                                                "         Fan Duration: "+seconds+ " Seconds\n\n" );
-                                        seconds = 0;
-                                        imax = 0;
-                                        fanThresholdFlag=true;
-                                        autoFlip = false;
+                                        if(i<=500 && seconds!=0 && fanThresholdFlag==false)
+                                        {
+
+                                            AutoturnOffFan();
+
+
+                                            String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                                            Date date = new Date();
+                                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd / 04 / yyyy");
+                                            String td = dateFormat.format(date);
+                                            running = false;
+                                            mTxtReceive.append("         "+ td+ " " +currentTime+"\n"+"         Smoke in PPM "+imax+"\n"+ "         Fan Duration: "+seconds+ " Seconds\n\n" );
+                                            AddData("         "+ td+ " " +currentTime+"\n"+"         Smoke in PPM "+imax+"\n"+ "         Fan Duration: "+seconds+ " Seconds\n\n");
+                                            seconds = 0;
+                                            imax = 0;
+                                            tempVal = 0;
+                                            fanThresholdFlag=true;
+
+                                        }
                                     }
-
 
                                     int txtLength = mTxtReceive.getEditableText().length();
                                     if(txtLength > mMaxChars){
@@ -290,7 +385,7 @@ public class UserSimpleActivity extends Activity {
                         }
 
                     }
-                    Thread.sleep(1500);
+                    Thread.sleep(500);
                 }
             } catch (IOException e) {
 // TODO Auto-generated catch block
@@ -321,14 +416,14 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 }
     }
 */
+    // function to add data inside local database
 
 
-    /*
-    Sends Alert to user even if application is in background
-     */
     private void toastMessage(String message){
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
+
+
 
     public void AddData(String newEntry) {
         boolean insertData = mDatabaseHelper.addData(newEntry);
@@ -339,6 +434,38 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             toastMessage("Something went wrong");
         }
     }
+
+
+
+
+    private void AutoMode()
+    {
+        if (mBTSocket!=null)
+        {
+            try
+            {
+                mBTSocket.getOutputStream().write("AM".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
+
+
+
+
+
+
+    /*
+    Sends Alert to user even if application is in background
+     */
+
+
+
+
+
 
 
     public void sendAlertOption(){

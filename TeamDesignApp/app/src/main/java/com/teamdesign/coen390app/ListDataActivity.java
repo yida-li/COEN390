@@ -65,7 +65,7 @@ public class ListDataActivity extends AppCompatActivity {
                 }
                 if(itemID > -1){
                     Log.d(TAG, "onItemClick: The ID is: " + itemID);
-                    Intent editScreenIntent = new Intent(ListDataActivity.this, EditDataActivity.class);
+                    Intent editScreenIntent = new Intent(com.teamdesign.coen390app.ListDataActivity.this, EditDataActivity.class);
                     editScreenIntent.putExtra("id",itemID);
                     editScreenIntent.putExtra("name",name);
                     startActivity(editScreenIntent);
@@ -83,5 +83,15 @@ public class ListDataActivity extends AppCompatActivity {
      */
     private void toastMessage(String message){
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mListView = (ListView) findViewById(R.id.listView);
+        mDatabaseHelper = new DatabaseHelper(this);
+        populateListView();
+
     }
 }

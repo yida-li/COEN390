@@ -32,6 +32,8 @@ Engineering Product Design Project
 
 > > : GitHub Desktop
 
+> > : Scrcpy
+
 # Project Team members
 
 > # Product Owner name: Alexander Vissani
@@ -116,9 +118,7 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/y4.jpg)
 
-
 > > > # Protoype wireframe diagram
-
 
 > > > > > ![til](photos/y1.PNG)
 
@@ -156,6 +156,19 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/y9.PNG)
 
+> > [Sprint 3]
+
+> > ---
+> >
+> > ---
+
+> > > # Updated wireframe diagram
+
+> > > > > ![til](photos/z10.PNG)
+
+> > > # Updated System Architecture
+
+> > > > > ![til](photos/z11.PNG)
 
 # Edit this page
 

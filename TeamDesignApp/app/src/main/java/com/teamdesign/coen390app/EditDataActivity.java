@@ -17,6 +17,10 @@ public class EditDataActivity extends AppCompatActivity {
     private Button btnSave,btnDelete;
     private EditText editable_item;
 
+    private EditText Date;
+    private EditText AirQuality;
+    private EditText Duration;
+
     DatabaseHelper mDatabaseHelper;
 
     private String selectedName;
@@ -32,6 +36,13 @@ public class EditDataActivity extends AppCompatActivity {
         editable_item = (EditText) findViewById(R.id.editable_item);
         mDatabaseHelper = new DatabaseHelper(this);
 
+        Date = findViewById(R.id.Date);
+        AirQuality = findViewById(R.id.AirQuality);
+        Duration = findViewById(R.id.Time);
+
+
+
+
         //get the intent extra from the ListDataActivity
         Intent receivedIntent = getIntent();
 
@@ -42,14 +53,20 @@ public class EditDataActivity extends AppCompatActivity {
         selectedName = receivedIntent.getStringExtra("name");
 
         //set the text to show the current selected name
-        editable_item.setText(selectedName);
+//        editable_item.setText(selectedName);
+        String[] lines = selectedName.split("\r?\n");
+        Date.setText(lines[0]);
+        AirQuality.setText(lines[1]);
+        Duration.setText(lines[2]);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String item = editable_item.getText().toString();
+//                String item = editable_item.getText().toString();
+                String item = (Date.getText() + "\n" + AirQuality.getText() + "\n" + Duration.getText() + "\n").toString();
                 if(!item.equals("")){
                     mDatabaseHelper.updateName(item,selectedID,selectedName);
+                    toastMessage("SAVED");
                 }else{
                     toastMessage("You must enter a name");
                 }
@@ -60,8 +77,13 @@ public class EditDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mDatabaseHelper.deleteName(selectedID,selectedName);
-                editable_item.setText("");
-                toastMessage("removed from database");
+//                editable_item.setText("");
+
+                Date.setText("");
+                AirQuality.setText("");
+                Duration.setText("");
+
+                toastMessage("DELETED");
             }
         });
 

@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Button search;
     private Button connect;
     private Button connect1;
-    private Button connect2;
-    private Button connect3;
+    private Button historylogbutton;
     private ListView listView;
     private BluetoothAdapter mBTAdapter;
     private static final int BT_ENABLE_REQUEST = 10; // This is the code we use for BT Enable
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Testing which will be deprecated as soon as ricky as us about it
     private static final String TAG = "BlueTest5-MainActivity";
-
     
 
     @Override
@@ -64,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
         search = (Button) findViewById(R.id.search);
         connect = (Button) findViewById(R.id.connect);
         connect1 = (Button) findViewById(R.id.connect1);
-        connect2 = (Button) findViewById(R.id.connect2);
-        connect3 = (Button) findViewById(R.id.connect3);
+        historylogbutton=(Button)findViewById(R.id.historylogbutton);
         listView = (ListView) findViewById(R.id.listview);
+
+
 
         if (savedInstanceState != null) {
             ArrayList<BluetoothDevice> list = savedInstanceState.getParcelableArrayList(DEVICE_LIST);
@@ -74,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 initList(list);
                 MyAdapter adapter = (MyAdapter) listView.getAdapter();
                 int selectedIndex = savedInstanceState.getInt(DEVICE_LIST_SELECTED);
+                Log.d(TAG, "BTone" + adapter);
                 if (selectedIndex != -1) {
                     adapter.setSelectedIndex(selectedIndex);
                     connect.setEnabled(true);
@@ -86,8 +86,10 @@ public class MainActivity extends AppCompatActivity {
             initList(new ArrayList<BluetoothDevice>());
         }
 
-        //Skip Device setup;
-        autoConnect();
+
+        connect.setEnabled(false);
+        connect1.setEnabled(false);
+
 
 
 
@@ -98,23 +100,25 @@ public class MainActivity extends AppCompatActivity {
                 mBTAdapter = BluetoothAdapter.getDefaultAdapter();
 
                 if (mBTAdapter == null) {
+                    Log.d(TAG, "BTfive" );
                     Toast.makeText(getApplicationContext(), "Bluetooth not found", Toast.LENGTH_SHORT).show();
                 } else if (!mBTAdapter.isEnabled()) {
+                    Log.d(TAG, "BTsix" );
                     Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBT, BT_ENABLE_REQUEST);
                 } else {
+                    Log.d(TAG, "BTseven" );
                     new SearchDevices().execute();
                 }
             }
         });
-
 
         connect.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-                Intent intent = new Intent(getApplicationContext(), LandingPageActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                 intent.putExtra(DEVICE_EXTRA, device);
                 intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
                 intent.putExtra(BUFFER_SIZE, mBufferSize);
@@ -135,74 +139,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        connect2.setOnClickListener(new View.OnClickListener() {
+        historylogbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-                Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
-                intent.putExtra(DEVICE_EXTRA, device);
-                intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
-                intent.putExtra(BUFFER_SIZE, mBufferSize);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
-        connect3.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-                Intent intent = new Intent(getApplicationContext(), ControlActivity.class);
-                intent.putExtra(DEVICE_EXTRA, device);
-                intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
-                intent.putExtra(BUFFER_SIZE, mBufferSize);
+                Intent intent = new Intent(getApplicationContext(), ListDataActivity.class);
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
 
 
-
-
     }
-
-    void autoConnect()
-    {
-        String deviceName;
-        mBTAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        if (mBTAdapter == null) {
-            Toast.makeText(getApplicationContext(), "Bluetooth not found", Toast.LENGTH_SHORT).show();
-        } else if (!mBTAdapter.isEnabled()) {
-            Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBT, BT_ENABLE_REQUEST);
-        } else {
-            new SearchDevices().execute();
-        }
-
-        Set<BluetoothDevice> pairedDevices = mBTAdapter.getBondedDevices();
-        List<BluetoothDevice> listDevices = new ArrayList<BluetoothDevice>();
-        for (BluetoothDevice device : pairedDevices) {
-            listDevices.add(device);
-        }
-        for(int i = 0 ; i < listDevices.size(); i ++)
-        {
-            deviceName = (listDevices.get(i).getName());
-            if(deviceName.equals("HC-05"))
-            {
-                BluetoothDevice device = listDevices.get(i);
-                Intent intent = new Intent(getApplicationContext(), LandingPageActivity.class);
-                intent.putExtra(DEVICE_EXTRA, device);
-                intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
-                intent.putExtra(BUFFER_SIZE, mBufferSize);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                break;
-            }
-        }
-    }
-
 
     protected void onPause() {
 // TODO Auto-generated method stub
@@ -270,6 +220,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                connect.setEnabled(true);
+                connect1.setEnabled(true);
                 adapter.setSelectedIndex(position);
                 connect.setEnabled(true);
             }
@@ -281,43 +233,28 @@ public class MainActivity extends AppCompatActivity {
      */
     private class SearchDevices extends AsyncTask<Void, Void, List<BluetoothDevice>> {
 
+
         @Override
         protected List<BluetoothDevice> doInBackground(Void... params) {
             Set<BluetoothDevice> pairedDevices = mBTAdapter.getBondedDevices();
             List<BluetoothDevice> listDevices = new ArrayList<BluetoothDevice>();
             for (BluetoothDevice device : pairedDevices) {
-                listDevices.add(device);
+                if(device.getName().equals("HC-05"))
+                { listDevices.add(device);}
             }
             return listDevices;
-
         }
 
         @Override
         protected void onPostExecute(List<BluetoothDevice> listDevices) {
             super.onPostExecute(listDevices);
-            List<BluetoothDevice> tempList  =  new ArrayList<>();
-            for(int i = 0; i < listDevices.size(); i++)
-            {
-                if((listDevices.get(i).getName()).equals("HC-05"))
-                {
-                    tempList.add(listDevices.get(i));
-                    MyAdapter adapter = (MyAdapter) listView.getAdapter();
-                    adapter.replaceItems(tempList);
-                    break;
-                }
 
-            }
-            if(tempList.size() == 0)
-            {
+            if (listDevices.size() > 0) {
+                MyAdapter adapter = (MyAdapter) listView.getAdapter();
+                adapter.replaceItems(listDevices);
+            } else {
                 msg("No paired devices found, please pair your serial BT device and try again");
             }
-//            if (listDevices.size() > 0) {
-//                MyAdapter adapter = (MyAdapter) listView.getAdapter();
-//                adapter.replaceItems(listDevices);
-//            }
-//            else {
-//                msg("No paired devices found, please pair your serial BT device and try again");
-//            }
         }
 
     }
@@ -397,33 +334,29 @@ public class MainActivity extends AppCompatActivity {
             }
             BluetoothDevice device = myList.get(position);
             //holder.tv.setText(device.getName() + "\n " + device.getAddress());
-            if (device.getAddress() == "00:18:E4:35:52:6B" || device.getName().substring(0, 1)=="H"){
-                holder.tv.setText(" User Device "+ "\n");
-            }
-            else{
-                holder.tv.setText(device.getName() + "\n " + device.getAddress());
-            }
+         //   holder.tv.setText(device.getName() + "\n testing \n" + device.getAddress());
+         //   holder.tv.setText("|"+device.getName()+"|" + "\n " + device.getAddress());
+            holder.tv.setText(device.getName() + "\n " + device.getAddress());
+       //     Log.d(TAG,"BTBTBTBT" + device.getName());
+
+
+           // device.get(position).setText("Smoke Sensor");
+          //     if (device.getName() == "HC-05"){
+             //   holder.tv.setText(" User Device "+ "\n");
+                 //  @Override
+                //   public void onClick(View arg0) {
+                  //     BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
+               //    Log.d(TAG, "BluetoothPassYes");
+
+           // }
+           // else{
+           //     holder.tv.setText(device.getName() + "\n " + device.getAddress());
+           // }
             return vi;
         }
 
     }
 
     // Deprecated from the guide online
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.homescreen, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent intent = new Intent(MainActivity.this, PreferencesActivity.class);
-                startActivityForResult(intent, SETTINGS);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

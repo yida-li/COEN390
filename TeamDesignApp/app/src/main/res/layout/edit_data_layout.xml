@@ -1,42 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/background"
+    android:orientation="vertical">
 
 
     <EditText
-        android:id="@+id/editable_item"
-        android:layout_width="match_parent"
-        android:layout_height="310dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="78dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textAlignment="center" />
-    <LinearLayout
-        android:layout_centerHorizontal="true"
+        android:id="@+id/Date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:weightSum="100"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
+    <EditText
+        android:id="@+id/AirQuality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
+    <EditText
+        android:id="@+id/Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/editable_item"
-        >
+
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:weightSum="100">
 
         <Button
+            android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="DELETE"
-            android:id="@+id/btnDelete"/>
+            android:text="DELETE" />
+
+        <Space
+            android:layout_width="27dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <Button
+            android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="SAVE"
             android:layout_toRightOf="@+id/btnDelete"
-            android:id="@+id/btnSave"/>
+            android:text="SAVE" />
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

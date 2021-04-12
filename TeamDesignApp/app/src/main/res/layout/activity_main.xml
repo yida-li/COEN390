@@ -4,8 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Search for your Bluetooth!"
+        android:textColor="#0669B8"
+        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,49 +30,70 @@
 
             android:text="Search" />
 
-        <Button
-            android:id="@+id/connect"
-            android:layout_width="133dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:text="Detailed Interface" />
-        <Button
-            android:id="@+id/connect1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:text="Simple Interface" />
-
 
     </LinearLayout>
+
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
-    </ListView>
+        android:layout_height="69dp"></ListView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp">
+        android:text="Select your Activity!"
+        android:textColor="#025CA3"
+        android:textSize="24sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="For Fan Controls:"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/connect"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:layout_marginLeft="80dp"
+        android:text="CONTROL + ADVANCED" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="For Graph and History:"
+        android:textColor="#000000"
+        android:textSize="18sp" />
 
 
-        <Button
-            android:id="@+id/connect2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:text="super Interface" />
+    <Button
+        android:id="@+id/connect1"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:layout_marginLeft="80dp"
+        android:text="LOG PAGE" />
 
-        <Button
-            android:id="@+id/connect3"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:text="ultra Interface" />
+    <Button
+        android:id="@+id/historylogbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="History"
+        android:visibility="invisible" />
 
-
-    </LinearLayout>
 
 </LinearLayout>
