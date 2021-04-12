@@ -160,31 +160,31 @@ Sprint 3 [Main app](https://github.com/yida-li/COEN390/tree/master/TeamDesignApp
 
 > > > # Main Page
 
-> > > > > ![til](photos/f1.PNG)
+> > > > > ![til](photos/f1.png)
 
 > > > # Advanced Reading
 
-> > > > > ![til](photos/f2.PNG)
+> > > > > ![til](photos/f2.png)
 
 > > > # Detail Page
 
-> > > > > ![til](photos/f3.PNG)
+> > > > > ![til](photos/f3.png)
 
 > > > # Log Page
 
-> > > > > ![til](photos/f5.PNG)
+> > > > > ![til](photos/f5.png)
 
 > > > # History ListView
 
-> > > > > ![til](photos/f6.PNG)
+> > > > > ![til](photos/f6.png)
 
 > > > # Edit History
 
-> > > > > ![til](photos/f7.PNG)
+> > > > > ![til](photos/f7.png)
 
 > > > # Graph Page
 
-> > > > > ![til](photos/f8.PNG)
+> > > > > ![til](photos/f8.png)
 
 # Edit this page
 
