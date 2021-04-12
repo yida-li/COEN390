@@ -4,6 +4,16 @@ Engineering Product Design Project
 
 # Milestones
 
+Milestone 1 (Planning Phase) : January 31 - Feburary 5
+
+Milestone 2 (Documentation Preperations) : February 6 - February 18
+
+Sprint 1 [App Prototype](https://github.com/yida-li/COEN390/tree/master/TeamDesignPropType) : February 23 - March 12
+
+Sprint 2 [Test App](https://github.com/yida-li/COEN390/tree/master/TeamDesignLEDApk) : March 13 - March 26
+
+Sprint 3 [Main app](https://github.com/yida-li/COEN390/tree/master/TeamDesignApp) : March 27 - April 12
+
 # Technology used
 
 > # Hardware components:
@@ -64,7 +74,6 @@ Engineering Product Design Project
 >                 student id:
 >                 github username:
 
-
 # Sprint 1 Prototype
 
 > > > # User Interface Prototype
@@ -119,7 +128,6 @@ Engineering Product Design Project
 
 # Sprint 2 Test Application
 
-
 > > > # User Interface with automatic/manual settings
 
 > > > > > ![til](photos/y5.png)
@@ -150,10 +158,33 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/z11.PNG)
 
+> > > # Main Page
 
-> > ---
-> >
-> > ---
+> > > > > ![til](photos/f1.PNG)
+
+> > > # Advanced Reading
+
+> > > > > ![til](photos/f2.PNG)
+
+> > > # Detail Page
+
+> > > > > ![til](photos/f3.PNG)
+
+> > > # Log Page
+
+> > > > > ![til](photos/f5.PNG)
+
+> > > # History ListView
+
+> > > > > ![til](photos/f6.PNG)
+
+> > > # Edit History
+
+> > > > > ![til](photos/f7.PNG)
+
+> > > # Graph Page
+
+> > > > > ![til](photos/f8.PNG)
 
 # Edit this page
 
