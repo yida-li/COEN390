@@ -1,10 +1,8 @@
-# COEN390
+# COEN390/ELECT 390
 
 Engineering Product Design Project
 
 # Milestones
-
-# Sprints
 
 # Technology used
 
@@ -66,19 +64,8 @@ Engineering Product Design Project
 >                 student id:
 >                 github username:
 
-# Documentation
 
-> # Pictures
-
-> > ---
-> >
-> > ---
-
-> > [Sprint 1]
-
-> > ---
-> >
-> > ---
+# Sprint 1 Prototype
 
 > > > # User Interface Prototype
 
@@ -130,11 +117,8 @@ Engineering Product Design Project
 > >
 > > ---
 
-> > [Sprint 2]
+# Sprint 2 Test Application
 
-> > ---
-> >
-> > ---
 
 > > > # User Interface with automatic/manual settings
 
@@ -156,11 +140,7 @@ Engineering Product Design Project
 
 > > > > > ![til](photos/y9.PNG)
 
-> > [Sprint 3]
-
-> > ---
-> >
-> > ---
+# Sprint 3 Main Application
 
 > > > # Updated wireframe diagram
 
@@ -169,6 +149,11 @@ Engineering Product Design Project
 > > > # Updated System Architecture
 
 > > > > > ![til](photos/z11.PNG)
+
+
+> > ---
+> >
+> > ---
 
 # Edit this page
 
