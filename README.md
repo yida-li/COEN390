@@ -1,4 +1,4 @@
-# COEN390/ELECT 390
+# COEN390/ELEC390
 
 Engineering Product Design Project
 
